@@ -1,0 +1,24 @@
+﻿@model IEnumerable<GBC_Travel_Group23.Models.Hotel>
+
+<h2>Search Hotels</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Location</th>
+        <th>Details</th>
+    </tr>
+
+    @foreach (var hotel in Model)
+    {
+        <tr>
+            <td>@hotel.Name</td>
+            <td>@hotel.Address</td>
+            <td>@hotel.Location.City, @hotel.Location.Country</td>
+            <td>
+                <a asp-action="HotelDetails" asp-route-id="@hotel.Id">View Details</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,5 +1,6 @@
 ﻿using GBC_Travel_Group23.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GBC_Travel_Group23.Controllers
 {
@@ -10,41 +11,81 @@ namespace GBC_Travel_Group23.Controllers
         {
             _context = context;
         }
-        
+
         [HttpPost]
-        public IActionResult SearchFlights(string from, string to, DateTime departureDate, DateTime returnDate)
+        public IActionResult SearchFlights(string from, string to, DateTime departureDate)
         {
-            // Your flight search logic here
-            // This could involve querying a database, calling an external API, etc.
-            // For demonstration purposes, let's just return a dummy result
-            var flights = new List<string> { "Flight 1", "Flight 2", "Flight 3" };
-            return Json(flights);
+            // Assuming you have a dbContext to interact with your database
+            var flights = _context.Flights
+                .Include(f => f.DepartureLocation)
+                .Include(f => f.ArrivalLocation)
+                .Where(f => f.DepartureLocation.AirportCode == from &&
+                            f.ArrivalLocation.AirportCode == to &&
+                            f.DepartureDate.Date == departureDate.Date)
+                .ToList();
+
+            return View(flights);
         }
 
-        // This action method handles searching for hotels
-        [HttpPost]
-        public IActionResult SearchHotels(string country, string city, DateTime checkInDate, DateTime checkOutDate)
+        public class HotelController : Controller
         {
-            // Your hotel search logic here
-            // This could involve querying a database, calling an external API, etc.
-            // For demonstration purposes, let's just return a dummy result
-            var hotels = new List<string> { "Hotel 1", "Hotel 2", "Hotel 3" };
-            return Json(hotels);
+            private readonly AppDbContext _context;
+
+            public HotelController(AppDbContext context)
+            {
+                _context = context;
+            }
+
+            // This action is for searching hotels based on location
+            public IActionResult SearchHotels(int locationId)
+            {
+                var hotels = _context.Hotels
+                    .Include(h => h.Location)
+                    .Where(h => h.LocationId == locationId)
+                    .ToList();
+
+                return View(hotels);
+            }
+
+            public IActionResult HotelDetails(int id)
+            {
+                var hotel = _context.Hotels
+                    .Include(h => h.Location)
+                    .Include(h => h.Rooms) 
+                    .FirstOrDefault(h => h.Id == id);
+
+                if (hotel == null)
+                {
+                    return NotFound();
+                }
+
+                
+                return View(hotel);
+            }
         }
 
-        // This action method handles searching for car rentals
-        [HttpPost]
-        public IActionResult SearchCarRentals(string country, string city, DateTime pickUpDate, DateTime dropOffDate)
+      
+
+
+        public class CarRentalController : Controller
         {
-            // Your car rental search logic here
-            // This could involve querying a database, calling an external API, etc.
-            // For demonstration purposes, let's just return a dummy result
-            var carRentals = new List<string> { "Car Rental 1", "Car Rental 2", "Car Rental 3" };
-            return Json(carRentals);
+            private readonly AppDbContext _context;
 
+            public CarRentalController(AppDbContext context)
+            {
+                _context = context;
+            }
 
+            public IActionResult SearchCarRentals(int locationId)
+            {
+                var carRentals = _context.CarRentals
+                    .Include(cr => cr.Location)
+                    .Where(cr => cr.LocationId == locationId)
+                    .ToList();
 
+                return View(carRentals);
+            }
         }
-        
+
     }
 }
