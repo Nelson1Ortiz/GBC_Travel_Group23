@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GBC_Travel_Group23.Models.HotelRoom>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hotel Name</th>
+            <th>Room Name</th>
+            <th>Max Occupants</th>
+            <th>Amenities</th>
+            <th>Room Count</th>
+            <th>Rate (per night)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model)
+        {
+            <tr>
+                <td>@room.Hotel.Name</td>
+                <td>@room.RoomName</td>
+                <td>@room.MaxOccupants</td>
+                <td>@string.Join(", ", room.Amenities)</td>
+                <td>@room.RoomCount</td>
+                <td>$@room.Rate</td>
+            </tr>
+        }
+    </tbody>
+</table>

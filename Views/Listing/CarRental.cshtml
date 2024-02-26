@@ -1,0 +1,29 @@
+﻿@model IEnumerable<GBC_Travel_Group23.Models.CarRental>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Capacity</th>
+            <th>Available Count</th>
+            <th>Rate (per day)</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.Make</td>
+                <td>@car.Model</td>
+                <td>@car.CarYear</td>
+                <td>@car.Capacity</td>
+                <td>@car.Count</td>
+                <td>@car.Rate.ToString("C")</td> <!-- Assuming currency format -->
+                <td>@(car.Location)</td>
+            </tr>
+        }
+    </tbody>
+</table>
