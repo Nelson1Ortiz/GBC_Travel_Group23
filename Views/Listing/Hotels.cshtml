@@ -1,0 +1,23 @@
+﻿@model IEnumerable<GBC_Travel_Group23.Models.Hotel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hotel Name</th>
+            <th>Location</th>
+            <th>Rating</th>
+            <th>Amenities</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hotel in Model)
+        {
+            <tr>
+                <td>@hotel.Name</td>
+                <td>@hotel.Location</td>
+                <td>@hotel.Address</td>
+                <td>@string.Join(", ", hotel.Amenities)</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -39,7 +39,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
 
-                        <button type="submit" class="btn btn-primary">Search Flights</button>
+                        <button type="submit" class="btn btn-primary" asp-controller="Search" asp-action="SearchFlights">Search Flights</button>
                     </div>
 
                 </form>
@@ -55,7 +55,7 @@
 
                     <input type="text" placeholder="Check In" id="hotel-check-in" name="check-in">
                     <input type="text" placeholder="Check Out" id="hotel-check-out" name="check-out">
-                    <button type="submit">Search Hotels</button>
+                    <button type="submit" asp-controller="Search" asp-action="SearchHotels">Search Hotels</button>
                 </form>
             </div>
 
@@ -68,7 +68,7 @@
                     <input type="text" placeholder="City" id="car-rental-city">
                     <input type="text" placeholder="Pick-Up Date" id="car-rental-pick-up-date">
                     <input type="text" placeholder="Drop-Off Date" id="car-rental-drop-off-date">
-                    <button type="submit">Search Car Rentals</button>
+                    <button type="submit" asp-controller="Search" asp-action="SearchCarRentals">Search Car Rentals</button>
                 </form>
             </div>
         </div>

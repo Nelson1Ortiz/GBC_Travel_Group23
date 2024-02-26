@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GBC_Travel_Group23.Models.Booking>
+
+<h2>Client Bookings</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Service Type</th>
+                <th>Details</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.Id</td>
+                    <td>@booking.Type</td>
+                    <td>
+                        @if (booking.Flight != null)
+                        {
+                            @: Flight to @booking.Flight.ArrivalLocation.City on @booking.Flight.DepartureDate.ToString("MM/dd/yyyy")
+                        }
+                        else if (booking.CarRental != null)
+                        {
+                            @: Car Rental - @booking.CarRental.Make @booking.CarRental.Model
+                        }
+                        else if (booking.HotelRoom != null)
+                        {
+                            @: Hotel Stay at @booking.HotelRoom.Hotel.Name
+                        }
+                    </td>
+                    <td>@booking.StartDate.ToString("MM/dd/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No bookings found for this client.</p>
+}
