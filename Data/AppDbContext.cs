@@ -96,21 +96,21 @@ namespace GBC_Travel_Group23.Data
             modelBuilder.Entity<Location>().HasData(
                 new Location { Id = 1001, Country = "USA", City = "New York", Region = "NY", AirportCode = "JFK" },
                 new Location { Id = 1002, Country = "Canada", City = "Toronto", Region = "ON", AirportCode = "YYZ" },
-                new Location { Id = 1001, Country = "USA", City = "New York", Region = "NY", AirportCode = "JFK" },
-                new Location { Id = 1002, Country = "Canada", City = "Toronto", Region = "ON", AirportCode = "YYZ" },
-                new Location { Id = 1003, Country = "United Kingdom", City = "London", Region = "ENG", AirportCode = "LHR" },
-                new Location { Id = 1004, Country = "Germany", City = "Berlin", Region = "BE", AirportCode = "TXL" },
-                new Location { Id = 1005, Country = "Japan", City = "Tokyo", Region = "13", AirportCode = "HND" },
-                new Location { Id = 1006, Country = "Australia", City = "Sydney", Region = "NSW", AirportCode = "SYD" },
-                new Location { Id = 1007, Country = "Brazil", City = "Rio de Janeiro", Region = "RJ", AirportCode = "GIG" },
-                new Location { Id = 1008, Country = "South Africa", City = "Cape Town", Region = "WC", AirportCode = "CPT" },
-                new Location { Id = 1009, Country = "India", City = "Mumbai", Region = "MH", AirportCode = "BOM" },
-                new Location { Id = 1010, Country = "China", City = "Beijing", Region = "BJ", AirportCode = "PEK" },
-                new Location { Id = 1011, Country = "France", City = "Paris", Region = "IDF", AirportCode = "CDG" },
-                new Location { Id = 1012, Country = "Italy", City = "Rome", Region = "RM", AirportCode = "FCO" },
-                new Location { Id = 1013, Country = "Spain", City = "Barcelona", Region = "CT", AirportCode = "BCN" },
-                new Location { Id = 1014, Country = "Russia", City = "Moscow", Region = "MOW", AirportCode = "SVO" },
-                new Location { Id = 1015, Country = "South Korea", City = "Seoul", Region = "11", AirportCode = "ICN" }
+                new Location { Id = 1003, Country = "USA", City = "New York", Region = "NY", AirportCode = "JFK" },
+                new Location { Id = 1004, Country = "Canada", City = "Toronto", Region = "ON", AirportCode = "YYZ" },
+                new Location { Id = 1005, Country = "United Kingdom", City = "London", Region = "ENG", AirportCode = "LHR" },
+                new Location { Id = 1006, Country = "Germany", City = "Berlin", Region = "BE", AirportCode = "TXL" },
+                new Location { Id = 1007, Country = "Japan", City = "Tokyo", Region = "13", AirportCode = "HND" },
+                new Location { Id = 1008, Country = "Australia", City = "Sydney", Region = "NSW", AirportCode = "SYD" },
+                new Location { Id = 1009, Country = "Brazil", City = "Rio de Janeiro", Region = "RJ", AirportCode = "GIG" },
+                new Location { Id = 1010, Country = "South Africa", City = "Cape Town", Region = "WC", AirportCode = "CPT" },
+                new Location { Id = 1011, Country = "India", City = "Mumbai", Region = "MH", AirportCode = "BOM" },
+                new Location { Id = 1012, Country = "China", City = "Beijing", Region = "BJ", AirportCode = "PEK" },
+                new Location { Id = 1013, Country = "France", City = "Paris", Region = "IDF", AirportCode = "CDG" },
+                new Location { Id = 1014, Country = "Italy", City = "Rome", Region = "RM", AirportCode = "FCO" },
+                new Location { Id = 1015, Country = "Spain", City = "Barcelona", Region = "CT", AirportCode = "BCN" },
+                new Location { Id = 1016, Country = "Russia", City = "Moscow", Region = "MOW", AirportCode = "SVO" },
+                new Location { Id = 1017, Country = "South Korea", City = "Seoul", Region = "11", AirportCode = "ICN" }
             );
 
             modelBuilder.Entity<CarRental>().HasData(
@@ -148,39 +148,7 @@ namespace GBC_Travel_Group23.Data
                 new Hotel { Id = 13, Name = "Elegant Plaza Hotel", LocationId = 1013, Address = "1001 Grand Avenue", Amenities = new[] { "Luxurious Spa", "Fine Dining" } },
                 new Hotel { Id = 14, Name = "Riverside Inn", LocationId = 1014, Address = "1102 Waterfront Road", Amenities = new[] { "River View", "Fishing Dock" }},
                 new Hotel { Id = 15, Name = "Quaint Cottage Hotel", LocationId = 1015, Address = "1203 Cozy Lane", Amenities = new[] { "Charming Decor", "Quiet Atmosphere" } }
-);
-
-
-
-
-            // Seed data for Hotels - assuming you've adjusted the method to return IEnumerable<Hotel>
-            var hotels = GenerateHotels(); // Ensure this method returns an IEnumerable of Hotel
-            modelBuilder.Entity<Hotel>().HasData(hotels);
-
-            // If GenerateCarRentals and GenerateHotels are not static, you'll need to instantiate the class they belong to.
-        }
-
-        // Adjust GenerateCarRentals and GenerateHotels methods to return IEnumerable<CarRental> and IEnumerable<Hotel> respectively
-        public IEnumerable<CarRental> GenerateCarRentals()
-        {
-            // Generate and return your car rentals here...
-            return new List<CarRental>
-    {
-        // Example:
-        new CarRental { /* Initialization */ }
-    };
-        }
-
-        public IEnumerable<Hotel> GenerateHotels()
-        {
-            // Generate and return your hotels here...
-            return new List<Hotel>
-    {
-        // Example:
-        new Hotel { /* Initialization */ }
-    };
-
-
+            );
         }
 
     }
