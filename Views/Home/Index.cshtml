@@ -1,0 +1,80 @@
+﻿@page
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div class="text-center">
+        <div class="tabbed-search">
+            <ul class="tab-nav">
+                <li class="active"><a href="#flights-tab">Flights</a></li>
+                <li><a href="#hotels-tab">Hotels</a></li>
+                <li><a href="#car-rentals-tab">Car Rentals</a></li>
+            </ul>
+
+            <div id="flights-tab" class="tab active">
+                <form id="flights-search-form" class="search-form">
+                    <div class="trip-type">
+                        <input type="radio" id="round-trip" name="trip_type" value="roundtrip" checked>
+                        <label for="round-trip">Round Trip</label>
+                        <br>
+                        <input type="radio" id="one-way" name="trip_type" value="oneway">
+                        <label for="one-way">One Way</label>
+
+                    </div>
+
+                    <div class="flight-dates">
+                        <div class="departure-date">
+                            <label for="departure-date">Departure Date</label>
+                            <input type="text" id="departure-date" placeholder="Select Departure Date">
+                        </div>
+
+                        <div class="return-date">
+                            <label for="return-date">Return Date</label>
+                            <input type="text" id="return-date" placeholder="Select Return Date">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+
+                        <button type="submit" class="btn btn-primary">Search Flights</button>
+                    </div>
+
+                </form>
+            </div>
+
+
+            <div id="hotels-tab" class="tab">
+
+                <form id="hotel-search-form" class="search-form">
+
+                    <input type="text" placeholder="Country" id="hotel-country" name="country">
+                    <input type="text" placeholder="City" id="hotel-city" name="city">
+
+                    <input type="text" placeholder="Check In" id="hotel-check-in" name="check-in">
+                    <input type="text" placeholder="Check Out" id="hotel-check-out" name="check-out">
+                    <button type="submit">Search Hotels</button>
+                </form>
+            </div>
+
+
+
+            <div id="car-rentals-tab" class="tab">
+                <form id="car-rentals-search-form" class="search-form">
+
+                    <input type="text" placeholder="Country" id="car-rental-country">
+                    <input type="text" placeholder="City" id="car-rental-city">
+                    <input type="text" placeholder="Pick-Up Date" id="car-rental-pick-up-date">
+                    <input type="text" placeholder="Drop-Off Date" id="car-rental-drop-off-date">
+                    <button type="submit">Search Car Rentals</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

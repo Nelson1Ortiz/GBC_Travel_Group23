@@ -1,0 +1,145 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.tabbed-search {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
+
+    .tabbed-search .tab-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+        overflow: hidden;
+        border-bottom: 1px solid #ccc;
+    }
+
+        .tabbed-search .tab-nav li {
+            float: left;
+        }
+
+            .tabbed-search .tab-nav li a {
+                display: block;
+                padding: 10px 20px;
+                text-decoration: none;
+                color: #333;
+                background: #eee;
+                border-radius: 8px 8px 0 0;
+            }
+
+                .tabbed-search .tab-nav li.active a,
+                .tabbed-search .tab-nav li a:hover {
+                    background: #ddd;
+                }
+
+    .tabbed-search .tabs-content {
+        clear: both;
+    }
+
+    .tabbed-search .tab {
+        display: none;
+    }
+
+        .tabbed-search .tab.active {
+            display: block;
+        }
+
+/* Additional styling for form fields and buttons */
+.search-option {
+    margin-bottom: 10px;
+}
+
+    .search-option label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .search-option select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+button[type="submit"] {
+    background-color: #ffa500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* Additional styling for form fields and buttons */
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+    .search-form > div {
+        flex: 1; /* Each child div will grow equally */
+    }
+
+    .search-form input[type="text"],
+    .search-form button[type="submit"] {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem; /* Spacing between elements */
+    }
+
+    /* Align the submit button to the right */
+    .search-form button[type="submit"] {
+        margin-left: auto; /* Push the button to the right */
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+    }
+
+        .search-form button[type="submit"] {
+            margin-left: 0;
+        }
+}
+
+
+
+.trip-type label {
+    margin-right: 10px;
+}
+
+.flight-dates {
+    margin-bottom: 10px;
+}
+
+    .flight-dates div {
+        margin-bottom: 5px;
+    }
+
+

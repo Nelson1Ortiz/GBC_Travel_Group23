@@ -1,0 +1,31 @@
+﻿@model IEnumerable<GBC_Travel_Group23.Models.Flight>
+
+@{
+    ViewData["Title"] = "Flight Listings";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Airline</th>
+            <th>Flight Code</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in Model)
+        {
+        <tr>
+            <td>@flight.Airline</td>
+            <td>@flight.FlightCode</td>
+            <td>@flight.DepartureLocation.City - @flight.DepartureDate.ToString("g")</td>
+            <td>@flight.ArrivalLocation.City - @flight.ArrivalDate.ToString("g")</td>
+            <td>@flight.Price.ToString("C")</td>
+        </tr>
+        }
+    </tbody>
+</table>
