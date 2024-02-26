@@ -129,25 +129,25 @@ namespace GBC_Travel_Group23.Data
                 new CarRental { Id = 13, LocationId = 1013, Make = "Volkswagen", Model = "Atlas", CarYear = 2020, Capacity = 7, Count = 10, Rate = 85.00 },
                 new CarRental { Id = 14, LocationId = 1014, Make = "Subaru", Model = "Outback", CarYear = 2021, Capacity = 5, Count = 18, Rate = 70.00 },
                 new CarRental { Id = 15, LocationId = 1015, Make = "Tesla", Model = "Model X", CarYear = 2022, Capacity = 7, Count = 5, Rate = 200.00 },
-                new CarRental { Id = 16, LocationId = 1001, Make = "Mazda", Model = "CX-9", CarYear = 2020, Capacity = 7, Count = 12, Rate = 80.00 }
+                new CarRental { Id = 16, LocationId = 1016, Make = "Mazda", Model = "CX-9", CarYear = 2020, Capacity = 7, Count = 12, Rate = 80.00 }
             );
 
             modelBuilder.Entity<Hotel>().HasData(
-                new Hotel { Id = 1, Name = "Luxury Hotel", LocationId = 1001, Address = "123 Main Street", Amenities = new[] { "Free Wi-Fi, Pool", "Gym" } },
-                new Hotel { Id = 2, Name = "Comfort Inn", LocationId = 1002, Address = "456 Oak Avenue", Amenities = new[] {"Breakfast, Parking", "Pet Friendly" } },
-                new Hotel { Id = 3, Name = "Grand Resort", LocationId = 1003, Address = "789 Pine Road", Amenities = new[]  {"Spa, Restaurant", "Conference Rooms" } },
-                new Hotel { Id = 4, Name = "Cityscape Suites", LocationId = 1004, Address = "101 Skyline Boulevard", Amenities = new[] {"City View", "Rooftop Bar" } },
-                new Hotel { Id = 5, Name = "Seaside Retreat", LocationId = 1005, Address = "202 Beachfront Avenue", Amenities = new[] {"Beach Access", "Ocean View" } },
-                new Hotel { Id = 6, Name = "Mountain Lodge", LocationId = 1006, Address = "303 Summit Drive", Amenities = new[] {"Hiking Trails", "Fireplace" } },
-                new Hotel { Id = 7, Name = "Urban Oasis Hotel", LocationId = 1007, Address = "404 Downtown Street", Amenities = new[] {"Modern Decor", "Lounge" } },
-                new Hotel { Id = 8, Name = "Tranquil Inn", LocationId = 1008, Address = "505 Serene Road", Amenities = new[] { "Garden", "Reading", "Room" } },
-                new Hotel { Id = 9, Name = "Historic Mansion Hotel", LocationId = 1009, Address = "606 Heritage Lane", Amenities = new[] { "Antique Furnishings", "Ballroom" } },
-                new Hotel { Id = 10, Name = "Family Suites", LocationId = 1010, Address = "707 Maple Court", Amenities = new[] { "Kid's Play Area", "Family-Friendly"} },
-                new Hotel { Id = 11, Name = "Executive Stay", LocationId = 1011, Address = "808 Business Plaza", Amenities = new[] { "Business Center", "Concierge" } },
-                new Hotel { Id = 12, Name = "Woodland Lodge", LocationId = 1012, Address = "909 Forest Path", Amenities = new[] { "Nature Trails", "Bird Watching" } },
-                new Hotel { Id = 13, Name = "Elegant Plaza Hotel", LocationId = 1013, Address = "1001 Grand Avenue", Amenities = new[] { "Luxurious Spa", "Fine Dining" } },
-                new Hotel { Id = 14, Name = "Riverside Inn", LocationId = 1014, Address = "1102 Waterfront Road", Amenities = new[] { "River View", "Fishing Dock" }},
-                new Hotel { Id = 15, Name = "Quaint Cottage Hotel", LocationId = 1015, Address = "1203 Cozy Lane", Amenities = new[] { "Charming Decor", "Quiet Atmosphere" } }
+                new Hotel { Id = 1, Name = "Luxury Hotel", LocationId = 1001, Address = "123 Main Street", Amenities =   "Free Wi-Fi, Pool, Gym"  },
+                new Hotel { Id = 2, Name = "Comfort Inn", LocationId = 1002, Address = "456 Oak Avenue", Amenities =  "Breakfast, Parking, Pet Friendly"  },
+                new Hotel { Id = 3, Name = "Grand Resort", LocationId = 1003, Address = "789 Pine Road", Amenities =   "Spa, Restaurant, Conference Rooms"  },
+                new Hotel { Id = 4, Name = "Cityscape Suites", LocationId = 1004, Address = "101 Skyline Boulevard", Amenities =  "City View, Rooftop Bar"  },
+                new Hotel { Id = 5, Name = "Seaside Retreat", LocationId = 1005, Address = "202 Beachfront Avenue", Amenities =  "Beach Access, Ocean View"  },
+                new Hotel { Id = 6, Name = "Mountain Lodge", LocationId = 1006, Address = "303 Summit Drive", Amenities =  "Hiking Trails, Fireplace"  },
+                new Hotel { Id = 7, Name = "Urban Oasis Hotel", LocationId = 1007, Address = "404 Downtown Street", Amenities =  "Modern Decor, Lounge"  },
+                new Hotel { Id = 8, Name = "Tranquil Inn", LocationId = 1008, Address = "505 Serene Road", Amenities =   "Garden, Reading, Room"  },
+                new Hotel { Id = 9, Name = "Historic Mansion Hotel", LocationId = 1009, Address = "606 Heritage Lane", Amenities =   "Antique Furnishings, Ballroom"  },
+                new Hotel { Id = 10, Name = "Family Suites", LocationId = 1010, Address = "707 Maple Court", Amenities =  "Kid's Play Area, Family-Friendly" },
+                new Hotel { Id = 11, Name = "Executive Stay", LocationId = 1011, Address = "808 Business Plaza", Amenities =   "Business Center, Concierge"  },
+                new Hotel { Id = 12, Name = "Woodland Lodge", LocationId = 1012, Address = "909 Forest Path", Amenities =   "Nature Trails, Bird Watching"  },
+                new Hotel { Id = 13, Name = "Elegant Plaza Hotel", LocationId = 1013, Address = "1001 Grand Avenue", Amenities =   "Luxurious Spa, Fine Dining"  },
+                new Hotel { Id = 14, Name = "Riverside Inn", LocationId = 1014, Address = "1102 Waterfront Road", Amenities =   "River View, Fishing Dock" },
+                new Hotel { Id = 15, Name = "Quaint Cottage Hotel", LocationId = 1015, Address = "1203 Cozy Lane", Amenities =   "Charming Decor, Quiet Atmosphere"  }
             );
         }
 

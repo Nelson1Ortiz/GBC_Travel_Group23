@@ -12,13 +12,13 @@
             [ForeignKey("Hotel")]
             public int HotelId { get; set; }
 
-            public Hotel Hotel { get; set; } = new Hotel();
+            public Hotel? Hotel { get; set; } 
 
             [Required] public string RoomName { get; set; } = string.Empty;
 
             [Required] public int MaxOccupants { get; set; }
 
-            [Required] public string[] Amenities { get; set; } = [];
+            [Required] public string Amenities { get; set; }= string.Empty;
 
             [Required] public int RoomCount { get; set; }
 

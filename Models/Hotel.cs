@@ -12,9 +12,9 @@ namespace GBC_Travel_Group23.Models
         [Required]
         [ForeignKey("Location")]
         public int LocationId { get; set; }
-        public Location Location { get; set; } = new Location();
+        public Location? Location { get; set; }
         [Required] public string Address { get; set; } = string.Empty;
-        [Required] public string[] Amenities { get; set; } = Array.Empty<string>();
+        [Required] public string Amenities { get; set; } =string.Empty;
         
         [InverseProperty("Hotel")]
         public ICollection<HotelRoom>? Rooms { get; set; }
