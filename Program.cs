@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using GBC_Travel_Group23.Data; // Ensure this matches the namespace of your AppDbContext
+using GBC_Travel_Group23.Data; 
 using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
