@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group23.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240226191406_Update_1")]
-    partial class Update_1
+    [Migration("20240227002026_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
