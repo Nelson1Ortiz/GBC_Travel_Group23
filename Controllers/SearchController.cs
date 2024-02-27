@@ -12,6 +12,7 @@ namespace GBC_Travel_Group23.Controllers
             _context = context;
         }
 
+
         [HttpPost]
         public IActionResult SearchFlights(string from, string to, DateTime departureDate)
         {
@@ -58,8 +59,6 @@ namespace GBC_Travel_Group23.Controllers
             {
                 return NotFound();
             }
-
-                
             return View(hotel);
         }
 

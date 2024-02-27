@@ -25,7 +25,7 @@ namespace GBC_Travel_Group23.Controllers
                 return NotFound();
             }
 
-            Booking booking = new Booking();
+            Booking booking = new();
 
             switch (type.ToLower())
             {

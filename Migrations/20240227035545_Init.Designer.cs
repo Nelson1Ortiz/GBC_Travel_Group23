@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group23.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240227002026_Init")]
+    [Migration("20240227035545_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -101,7 +101,7 @@ namespace GBC_Travel_Group23.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 10001,
                             Capacity = 5,
                             CarYear = 2020,
                             Count = 15,
@@ -112,7 +112,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 10002,
                             Capacity = 7,
                             CarYear = 2019,
                             Count = 10,
@@ -123,7 +123,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 10003,
                             Capacity = 8,
                             CarYear = 2021,
                             Count = 12,
@@ -134,7 +134,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 10004,
                             Capacity = 12,
                             CarYear = 2020,
                             Count = 5,
@@ -145,7 +145,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 10005,
                             Capacity = 5,
                             CarYear = 2018,
                             Count = 20,
@@ -156,7 +156,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 10006,
                             Capacity = 5,
                             CarYear = 2022,
                             Count = 10,
@@ -167,7 +167,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 10007,
                             Capacity = 8,
                             CarYear = 2019,
                             Count = 8,
@@ -178,7 +178,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 10008,
                             Capacity = 8,
                             CarYear = 2021,
                             Count = 12,
@@ -189,7 +189,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 10009,
                             Capacity = 5,
                             CarYear = 2020,
                             Count = 7,
@@ -200,7 +200,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 10,
+                            Id = 10010,
                             Capacity = 7,
                             CarYear = 2022,
                             Count = 9,
@@ -211,7 +211,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 10011,
                             Capacity = 8,
                             CarYear = 2021,
                             Count = 6,
@@ -222,7 +222,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 10012,
                             Capacity = 8,
                             CarYear = 2019,
                             Count = 4,
@@ -233,7 +233,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 13,
+                            Id = 10013,
                             Capacity = 7,
                             CarYear = 2020,
                             Count = 10,
@@ -244,7 +244,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 10014,
                             Capacity = 5,
                             CarYear = 2021,
                             Count = 18,
@@ -255,7 +255,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 15,
+                            Id = 10015,
                             Capacity = 7,
                             CarYear = 2022,
                             Count = 5,
@@ -266,7 +266,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 16,
+                            Id = 10016,
                             Capacity = 7,
                             CarYear = 2020,
                             Count = 12,
@@ -412,6 +412,216 @@ namespace GBC_Travel_Group23.Migrations
                     b.HasIndex("DepartureLocationId");
 
                     b.ToTable("Flights");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 10001,
+                            Airline = "American Airlines",
+                            ArrivalDate = new DateTime(2024, 2, 27, 23, 55, 44, 498, DateTimeKind.Local).AddTicks(2710),
+                            ArrivalLocationId = 1002,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2669),
+                            DepartureLocationId = 1001,
+                            FlightCode = "AA101",
+                            Plane = "Boeing 777",
+                            Price = 350.0,
+                            TotalSeats = 300
+                        },
+                        new
+                        {
+                            Id = 10002,
+                            Airline = "American Airlines",
+                            ArrivalDate = new DateTime(2024, 3, 5, 23, 55, 44, 498, DateTimeKind.Local).AddTicks(2714),
+                            ArrivalLocationId = 1001,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2713),
+                            DepartureLocationId = 1002,
+                            FlightCode = "AA102",
+                            Plane = "Boeing 777",
+                            Price = 360.0,
+                            TotalSeats = 300
+                        },
+                        new
+                        {
+                            Id = 10003,
+                            Airline = "United Airlines",
+                            ArrivalDate = new DateTime(2024, 2, 28, 0, 55, 44, 498, DateTimeKind.Local).AddTicks(2719),
+                            ArrivalLocationId = 1004,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2717),
+                            DepartureLocationId = 1003,
+                            FlightCode = "UA203",
+                            Plane = "Boeing 787",
+                            Price = 450.0,
+                            TotalSeats = 250
+                        },
+                        new
+                        {
+                            Id = 10004,
+                            Airline = "United Airlines",
+                            ArrivalDate = new DateTime(2024, 3, 6, 0, 55, 44, 498, DateTimeKind.Local).AddTicks(2723),
+                            ArrivalLocationId = 1003,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2721),
+                            DepartureLocationId = 1004,
+                            FlightCode = "UA204",
+                            Plane = "Boeing 787",
+                            Price = 460.0,
+                            TotalSeats = 250
+                        },
+                        new
+                        {
+                            Id = 10005,
+                            Airline = "Delta Airlines",
+                            ArrivalDate = new DateTime(2024, 2, 28, 1, 55, 44, 498, DateTimeKind.Local).AddTicks(2727),
+                            ArrivalLocationId = 1006,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2725),
+                            DepartureLocationId = 1005,
+                            FlightCode = "DL305",
+                            Plane = "Airbus A330",
+                            Price = 550.0,
+                            TotalSeats = 290
+                        },
+                        new
+                        {
+                            Id = 10006,
+                            Airline = "Delta Airlines",
+                            ArrivalDate = new DateTime(2024, 3, 6, 1, 55, 44, 498, DateTimeKind.Local).AddTicks(2731),
+                            ArrivalLocationId = 1005,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2730),
+                            DepartureLocationId = 1006,
+                            FlightCode = "DL306",
+                            Plane = "Airbus A330",
+                            Price = 560.0,
+                            TotalSeats = 290
+                        },
+                        new
+                        {
+                            Id = 10007,
+                            Airline = "British Airways",
+                            ArrivalDate = new DateTime(2024, 2, 28, 8, 55, 44, 498, DateTimeKind.Local).AddTicks(2735),
+                            ArrivalLocationId = 1008,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2734),
+                            DepartureLocationId = 1007,
+                            FlightCode = "BA407",
+                            Plane = "Boeing 747",
+                            Price = 800.0,
+                            TotalSeats = 345
+                        },
+                        new
+                        {
+                            Id = 10008,
+                            Airline = "British Airways",
+                            ArrivalDate = new DateTime(2024, 3, 6, 8, 55, 44, 498, DateTimeKind.Local).AddTicks(2740),
+                            ArrivalLocationId = 1007,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2738),
+                            DepartureLocationId = 1008,
+                            FlightCode = "BA408",
+                            Plane = "Boeing 747",
+                            Price = 810.0,
+                            TotalSeats = 345
+                        },
+                        new
+                        {
+                            Id = 10009,
+                            Airline = "Lufthansa",
+                            ArrivalDate = new DateTime(2024, 2, 28, 9, 55, 44, 498, DateTimeKind.Local).AddTicks(2744),
+                            ArrivalLocationId = 1010,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2742),
+                            DepartureLocationId = 1009,
+                            FlightCode = "LH509",
+                            Plane = "Airbus A350",
+                            Price = 850.0,
+                            TotalSeats = 320
+                        },
+                        new
+                        {
+                            Id = 10010,
+                            Airline = "Lufthansa",
+                            ArrivalDate = new DateTime(2024, 3, 6, 9, 55, 44, 498, DateTimeKind.Local).AddTicks(2748),
+                            ArrivalLocationId = 1009,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2746),
+                            DepartureLocationId = 1010,
+                            FlightCode = "LH510",
+                            Plane = "Airbus A350",
+                            Price = 860.0,
+                            TotalSeats = 320
+                        },
+                        new
+                        {
+                            Id = 10011,
+                            Airline = "Emirates",
+                            ArrivalDate = new DateTime(2024, 2, 28, 3, 55, 44, 498, DateTimeKind.Local).AddTicks(2752),
+                            ArrivalLocationId = 1012,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2751),
+                            DepartureLocationId = 1011,
+                            FlightCode = "EM611",
+                            Plane = "Boeing 777",
+                            Price = 700.0,
+                            TotalSeats = 360
+                        },
+                        new
+                        {
+                            Id = 10012,
+                            Airline = "Emirates",
+                            ArrivalDate = new DateTime(2024, 3, 6, 3, 55, 44, 498, DateTimeKind.Local).AddTicks(2756),
+                            ArrivalLocationId = 1011,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2755),
+                            DepartureLocationId = 1012,
+                            FlightCode = "EM612",
+                            Plane = "Boeing 777",
+                            Price = 710.0,
+                            TotalSeats = 360
+                        },
+                        new
+                        {
+                            Id = 10013,
+                            Airline = "Qantas",
+                            ArrivalDate = new DateTime(2024, 2, 28, 18, 55, 44, 498, DateTimeKind.Local).AddTicks(2761),
+                            ArrivalLocationId = 1014,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2759),
+                            DepartureLocationId = 1013,
+                            FlightCode = "QF713",
+                            Plane = "Boeing 787",
+                            Price = 1000.0,
+                            TotalSeats = 236
+                        },
+                        new
+                        {
+                            Id = 10014,
+                            Airline = "Qantas",
+                            ArrivalDate = new DateTime(2024, 3, 6, 18, 55, 44, 498, DateTimeKind.Local).AddTicks(2765),
+                            ArrivalLocationId = 1013,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2763),
+                            DepartureLocationId = 1014,
+                            FlightCode = "QF714",
+                            Plane = "Boeing 787",
+                            Price = 1010.0,
+                            TotalSeats = 236
+                        },
+                        new
+                        {
+                            Id = 10015,
+                            Airline = "Air France",
+                            ArrivalDate = new DateTime(2024, 2, 28, 10, 55, 44, 498, DateTimeKind.Local).AddTicks(2769),
+                            ArrivalLocationId = 1016,
+                            DepartureDate = new DateTime(2024, 2, 27, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2767),
+                            DepartureLocationId = 1015,
+                            FlightCode = "AF815",
+                            Plane = "Boeing 777",
+                            Price = 900.0,
+                            TotalSeats = 310
+                        },
+                        new
+                        {
+                            Id = 10016,
+                            Airline = "Air France",
+                            ArrivalDate = new DateTime(2024, 3, 6, 10, 55, 44, 498, DateTimeKind.Local).AddTicks(2773),
+                            ArrivalLocationId = 1015,
+                            DepartureDate = new DateTime(2024, 3, 5, 22, 55, 44, 498, DateTimeKind.Local).AddTicks(2771),
+                            DepartureLocationId = 1016,
+                            FlightCode = "AF816",
+                            Plane = "Boeing 777",
+                            Price = 910.0,
+                            TotalSeats = 310
+                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group23.Models.Hotel", b =>
@@ -446,15 +656,15 @@ namespace GBC_Travel_Group23.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 10001,
                             Address = "123 Main Street",
                             Amenities = "Free Wi-Fi, Pool, Gym",
                             LocationId = 1001,
-                            Name = "Luxury Hotel"
+                            Name = "Chill Hotel"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 10002,
                             Address = "456 Oak Avenue",
                             Amenities = "Breakfast, Parking, Pet Friendly",
                             LocationId = 1002,
@@ -462,7 +672,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 10003,
                             Address = "789 Pine Road",
                             Amenities = "Spa, Restaurant, Conference Rooms",
                             LocationId = 1003,
@@ -470,7 +680,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 10004,
                             Address = "101 Skyline Boulevard",
                             Amenities = "City View, Rooftop Bar",
                             LocationId = 1004,
@@ -478,7 +688,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 10005,
                             Address = "202 Beachfront Avenue",
                             Amenities = "Beach Access, Ocean View",
                             LocationId = 1005,
@@ -486,7 +696,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 10006,
                             Address = "303 Summit Drive",
                             Amenities = "Hiking Trails, Fireplace",
                             LocationId = 1006,
@@ -494,7 +704,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 10007,
                             Address = "404 Downtown Street",
                             Amenities = "Modern Decor, Lounge",
                             LocationId = 1007,
@@ -502,7 +712,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 10008,
                             Address = "505 Serene Road",
                             Amenities = "Garden, Reading, Room",
                             LocationId = 1008,
@@ -510,7 +720,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 10009,
                             Address = "606 Heritage Lane",
                             Amenities = "Antique Furnishings, Ballroom",
                             LocationId = 1009,
@@ -518,7 +728,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 10,
+                            Id = 10010,
                             Address = "707 Maple Court",
                             Amenities = "Kid's Play Area, Family-Friendly",
                             LocationId = 1010,
@@ -526,7 +736,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 10011,
                             Address = "808 Business Plaza",
                             Amenities = "Business Center, Concierge",
                             LocationId = 1011,
@@ -534,7 +744,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 10012,
                             Address = "909 Forest Path",
                             Amenities = "Nature Trails, Bird Watching",
                             LocationId = 1012,
@@ -542,7 +752,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 13,
+                            Id = 10013,
                             Address = "1001 Grand Avenue",
                             Amenities = "Luxurious Spa, Fine Dining",
                             LocationId = 1013,
@@ -550,7 +760,7 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 10014,
                             Address = "1102 Waterfront Road",
                             Amenities = "River View, Fishing Dock",
                             LocationId = 1014,
@@ -558,11 +768,27 @@ namespace GBC_Travel_Group23.Migrations
                         },
                         new
                         {
-                            Id = 15,
+                            Id = 10015,
                             Address = "1203 Cozy Lane",
                             Amenities = "Charming Decor, Quiet Atmosphere",
                             LocationId = 1015,
                             Name = "Quaint Cottage Hotel"
+                        },
+                        new
+                        {
+                            Id = 10016,
+                            Address = "123 Cummer Road",
+                            Amenities = "Great View, Continental Breakfast",
+                            LocationId = 1016,
+                            Name = "Minerland Inn"
+                        },
+                        new
+                        {
+                            Id = 10017,
+                            Address = "132 Nether Lane",
+                            Amenities = "Classy Decor, Free Drinks",
+                            LocationId = 1017,
+                            Name = "Diamond Sword Hotel"
                         });
                 });
 
@@ -599,6 +825,428 @@ namespace GBC_Travel_Group23.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("HotelRooms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 10001,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10001,
+                            MaxOccupants = 1,
+                            Rate = 100.0,
+                            RoomCount = 4,
+                            RoomName = "1 Single"
+                        },
+                        new
+                        {
+                            Id = 10002,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10002,
+                            MaxOccupants = 1,
+                            Rate = 120.0,
+                            RoomCount = 4,
+                            RoomName = "1 Single"
+                        },
+                        new
+                        {
+                            Id = 10003,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10002,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Double"
+                        },
+                        new
+                        {
+                            Id = 10004,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10003,
+                            MaxOccupants = 2,
+                            Rate = 140.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10005,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10003,
+                            MaxOccupants = 2,
+                            Rate = 140.0,
+                            RoomCount = 4,
+                            RoomName = "1 King"
+                        },
+                        new
+                        {
+                            Id = 10006,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10003,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Twin"
+                        },
+                        new
+                        {
+                            Id = 10007,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10004,
+                            MaxOccupants = 3,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 Double, 1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10008,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10004,
+                            MaxOccupants = 3,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 King, 1 Twin"
+                        },
+                        new
+                        {
+                            Id = 10009,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10005,
+                            MaxOccupants = 1,
+                            Rate = 120.0,
+                            RoomCount = 4,
+                            RoomName = "1 Single"
+                        },
+                        new
+                        {
+                            Id = 10010,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10005,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Double"
+                        },
+                        new
+                        {
+                            Id = 10011,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10006,
+                            MaxOccupants = 2,
+                            Rate = 140.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10012,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10006,
+                            MaxOccupants = 2,
+                            Rate = 140.0,
+                            RoomCount = 4,
+                            RoomName = "1 King"
+                        },
+                        new
+                        {
+                            Id = 10013,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10006,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Twin"
+                        },
+                        new
+                        {
+                            Id = 10014,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10007,
+                            MaxOccupants = 3,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 Double, 1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10015,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10007,
+                            MaxOccupants = 3,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 King, 1 Twin"
+                        },
+                        new
+                        {
+                            Id = 10016,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10008,
+                            MaxOccupants = 1,
+                            Rate = 120.0,
+                            RoomCount = 4,
+                            RoomName = "1 Single"
+                        },
+                        new
+                        {
+                            Id = 10017,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10008,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Double"
+                        },
+                        new
+                        {
+                            Id = 10018,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10009,
+                            MaxOccupants = 2,
+                            Rate = 140.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10019,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10009,
+                            MaxOccupants = 2,
+                            Rate = 140.0,
+                            RoomCount = 4,
+                            RoomName = "1 King"
+                        },
+                        new
+                        {
+                            Id = 10020,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10009,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Twin"
+                        },
+                        new
+                        {
+                            Id = 10021,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10010,
+                            MaxOccupants = 3,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 Double, 1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10022,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10011,
+                            MaxOccupants = 2,
+                            Rate = 150.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10023,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10011,
+                            MaxOccupants = 4,
+                            Rate = 190.0,
+                            RoomCount = 4,
+                            RoomName = "2 Twin"
+                        },
+                        new
+                        {
+                            Id = 10024,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10011,
+                            MaxOccupants = 3,
+                            Rate = 170.0,
+                            RoomCount = 4,
+                            RoomName = "1 King, 1 Single"
+                        },
+                        new
+                        {
+                            Id = 10025,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10012,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Double"
+                        },
+                        new
+                        {
+                            Id = 10026,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10012,
+                            MaxOccupants = 2,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 King"
+                        },
+                        new
+                        {
+                            Id = 10027,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10012,
+                            MaxOccupants = 3,
+                            Rate = 170.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen, 1 Twin"
+                        },
+                        new
+                        {
+                            Id = 10028,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10013,
+                            MaxOccupants = 1,
+                            Rate = 120.0,
+                            RoomCount = 4,
+                            RoomName = "1 Single"
+                        },
+                        new
+                        {
+                            Id = 10029,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10013,
+                            MaxOccupants = 4,
+                            Rate = 200.0,
+                            RoomCount = 4,
+                            RoomName = "2 Queen"
+                        },
+                        new
+                        {
+                            Id = 10030,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10013,
+                            MaxOccupants = 4,
+                            Rate = 210.0,
+                            RoomCount = 4,
+                            RoomName = "1 King, 1 Double"
+                        },
+                        new
+                        {
+                            Id = 10031,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10014,
+                            MaxOccupants = 2,
+                            Rate = 150.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen"
+                        },
+                        new
+                        {
+                            Id = 10032,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10014,
+                            MaxOccupants = 2,
+                            Rate = 160.0,
+                            RoomCount = 4,
+                            RoomName = "1 King"
+                        },
+                        new
+                        {
+                            Id = 10033,
+                            Amenities = "Ensuite Bathroom, Free Wifi",
+                            HotelId = 10014,
+                            MaxOccupants = 4,
+                            Rate = 190.0,
+                            RoomCount = 4,
+                            RoomName = "2 Twin"
+                        },
+                        new
+                        {
+                            Id = 10034,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10015,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 4,
+                            RoomName = "2 Double"
+                        },
+                        new
+                        {
+                            Id = 10035,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10015,
+                            MaxOccupants = 3,
+                            Rate = 170.0,
+                            RoomCount = 4,
+                            RoomName = "1 Queen, 1 Twin"
+                        },
+                        new
+                        {
+                            Id = 10036,
+                            Amenities = "Ensuite Bathroom",
+                            HotelId = 10015,
+                            MaxOccupants = 3,
+                            Rate = 175.0,
+                            RoomCount = 4,
+                            RoomName = "1 King, 1 Single"
+                        },
+                        new
+                        {
+                            Id = 10037,
+                            Amenities = "WiFi, TV",
+                            HotelId = 10016,
+                            MaxOccupants = 4,
+                            Rate = 150.0,
+                            RoomCount = 3,
+                            RoomName = "2 Double"
+                        },
+                        new
+                        {
+                            Id = 10038,
+                            Amenities = "WiFi, Ensuite Bathroom",
+                            HotelId = 10016,
+                            MaxOccupants = 3,
+                            Rate = 120.0,
+                            RoomCount = 2,
+                            RoomName = "1 Queen, 1 Single"
+                        },
+                        new
+                        {
+                            Id = 10039,
+                            Amenities = "TV, Mini Fridge",
+                            HotelId = 10016,
+                            MaxOccupants = 4,
+                            Rate = 180.0,
+                            RoomCount = 5,
+                            RoomName = "1 King, 1 Double"
+                        },
+                        new
+                        {
+                            Id = 10040,
+                            Amenities = "WiFi, TV",
+                            HotelId = 10017,
+                            MaxOccupants = 3,
+                            Rate = 130.0,
+                            RoomCount = 4,
+                            RoomName = "3 Single"
+                        },
+                        new
+                        {
+                            Id = 10041,
+                            Amenities = "Ensuite Bathroom, Mini Fridge",
+                            HotelId = 10017,
+                            MaxOccupants = 4,
+                            Rate = 160.0,
+                            RoomCount = 3,
+                            RoomName = "2 Queen"
+                        },
+                        new
+                        {
+                            Id = 10042,
+                            Amenities = "WiFi, TV, Mini Fridge, Ensuite Bathroom",
+                            HotelId = 10017,
+                            MaxOccupants = 2,
+                            Rate = 200.0,
+                            RoomCount = 2,
+                            RoomName = "1 Suite"
+                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group23.Models.Location", b =>

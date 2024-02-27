@@ -12,12 +12,12 @@ namespace GBC_Travel_Group23.Models
         [Required]
         [ForeignKey("DepartureLocation")]
         public int DepartureLocationId { get; set; }
-        public Location DepartureLocation { get; set; } = new Location();
+        public virtual Location DepartureLocation { get; set; }
 
         [Required]
         [ForeignKey("ArrivalLocation")]
         public int ArrivalLocationId { get; set; }
-        public Location ArrivalLocation { get; set; } = new Location();
+        public virtual Location ArrivalLocation { get; set; }
 
         [Required] public DateTime DepartureDate { get; set; }
         
