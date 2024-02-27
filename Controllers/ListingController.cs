@@ -16,25 +16,26 @@ namespace GBC_Travel_Group23.Controllers
             _context = context;
         }
 
-        // GET: Listing/Flights
-        public async Task<IActionResult> Flights()
+        // GET: Listing/BookNow
+        public async Task<IActionResult> BookNow()
         {
-            var flights = await _context.Flights.ToListAsync();
-            return View(flights);
+            var viewModel = new
+            {
+                Flights = await _context.Flights.ToListAsync(),
+                Hotels = await _context.Hotels.Include(h => h.Rooms).ToListAsync(),
+                CarRentals = await _context.CarRentals.ToListAsync()
+            };
+
+            return View();
         }
 
-        // GET: Listing/Hotels
-        public async Task<IActionResult> Hotels()
+        public async Task<IActionResult> Search()
         {
-            var hotels = await _context.Hotels.Include(h => h.Rooms).ToListAsync();
-            return View(hotels);
-        }
+            ViewBag.Flights = await _context.Flights.ToListAsync();
+            ViewBag.CarRentals = await _context.CarRentals.ToListAsync();
+            ViewBag.Hotels = await _context.Hotels.ToListAsync();
 
-        // GET: Listing/CarRentals
-        public async Task<IActionResult> CarRentals()
-        {
-            var carRentals = await _context.CarRentals.ToListAsync();
-            return View(carRentals);
+            return View();
         }
     }
 }
