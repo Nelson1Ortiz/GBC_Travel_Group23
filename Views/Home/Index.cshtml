@@ -15,7 +15,7 @@
                 <li><a href="#car-rentals-tab">Car Rentals</a></li>
             </ul>
 
-            <div id="flights-tab" class="tab active">
+            <div id="flights-tab" class="tab active" method="post" asp-controller="Search" asp-action="SearchFlights">
                 <form id="flights-search-form" class="search-form">
                     <div class="trip-type">
                         <input type="radio" id="round-trip" name="trip_type" value="roundtrip" checked>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
 
-                        <button type="submit" class="btn btn-primary" asp-controller="Search" asp-action="SearchFlights">Search Flights</button>
+                        <button type="submit" class="btn btn-primary">Search Flights</button>
                     </div>
 
                 </form>
@@ -48,14 +48,14 @@
 
             <div id="hotels-tab" class="tab">
 
-                <form id="hotel-search-form" class="search-form">
+                <form id="hotel-search-form" class="search-form" method="get" action="/Search/SearchHotels">
 
                     <input type="text" placeholder="Country" id="hotel-country" name="country">
                     <input type="text" placeholder="City" id="hotel-city" name="city">
 
-                    <input type="text" placeholder="Check In" id="hotel-check-in" name="check-in">
-                    <input type="text" placeholder="Check Out" id="hotel-check-out" name="check-out">
-                    <button type="submit" asp-controller="Search" asp-action="SearchHotels">Search Hotels</button>
+                   <!-- <input type="text" placeholder="Check In" id="hotel-check-in" name="check-in">
+                    <input type="text" placeholder="Check Out" id="hotel-check-out" name="check-out"> -->
+                    <button type="submit">Search Hotels</button>
                 </form>
             </div>
 
