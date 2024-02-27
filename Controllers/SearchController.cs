@@ -27,74 +27,50 @@ namespace GBC_Travel_Group23.Controllers
             return View(flights);
         }
 
-        public class HotelController : Controller
+
+        // This action is for searching hotels based on location
+        public IActionResult SearchHotels(string country, string city)
         {
-            private readonly AppDbContext _context;
+            var location = _context.Locations.FirstOrDefault(l => l.Country == country && l.City == city);
 
-            public HotelController(AppDbContext context)
+            if (location == null)
             {
-                _context = context;
+                // Handle the case where the location is not found
+                return View("NotFound");
             }
 
-            // This action is for searching hotels based on location
-            public IActionResult SearchHotels(string country, string city)
+            var hotels = _context.Hotels
+                .Include(h => h.Location)
+                .Where(h => h.LocationId == location.Id)
+                .ToList();
+
+            return View(hotels);
+        }
+
+        public IActionResult HotelDetails(int id)
+        {
+            var hotel = _context.Hotels
+                .Include(h => h.Location)
+                .Include(h => h.Rooms) 
+                .FirstOrDefault(h => h.Id == id);
+
+            if (hotel == null)
             {
-                var location = _context.Locations.FirstOrDefault(l => l.Country == country && l.City == city);
-
-                if (location == null)
-                {
-                    // Handle the case where the location is not found
-                    return View("NotFound");
-                }
-
-                var hotels = _context.Hotels
-                    .Include(h => h.Location)
-                    .Where(h => h.LocationId == location.Id)
-                    .ToList();
-
-                return View(hotels);
+                return NotFound();
             }
-
-
-            public IActionResult HotelDetails(int id)
-            {
-                var hotel = _context.Hotels
-                    .Include(h => h.Location)
-                    .Include(h => h.Rooms) 
-                    .FirstOrDefault(h => h.Id == id);
-
-                if (hotel == null)
-                {
-                    return NotFound();
-                }
 
                 
-                return View(hotel);
-            }
+            return View(hotel);
         }
 
-      
-
-
-        public class CarRentalController : Controller
+        public IActionResult SearchCarRentals(int locationId)
         {
-            private readonly AppDbContext _context;
+            var carRentals = _context.CarRentals
+                .Include(cr => cr.Location)
+                .Where(cr => cr.LocationId == locationId)
+                .ToList();
 
-            public CarRentalController(AppDbContext context)
-            {
-                _context = context;
-            }
-
-            public IActionResult SearchCarRentals(int locationId)
-            {
-                var carRentals = _context.CarRentals
-                    .Include(cr => cr.Location)
-                    .Where(cr => cr.LocationId == locationId)
-                    .ToList();
-
-                return View(carRentals);
-            }
+            return View(carRentals);
         }
-
     }
 }
