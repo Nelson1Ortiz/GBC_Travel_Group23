@@ -17,74 +17,69 @@ namespace GBC_Travel_Group23.Controllers
             _context = context;
         }
 
-        // Existing methods ...
-
         // GET: Show booking confirmation form
-        public async Task<IActionResult> ConfirmBooking(int id) // Using 'id' to match your convention
+        public async Task<IActionResult> ConfirmBooking(int? id, string type) // id for service, type for service type
         {
-            // Assuming 'id' could be for any service type
-            var flight = await _context.Flights.FirstOrDefaultAsync(f => f.Id == id);
-            var carRental = flight == null ? await _context.CarRentals.FirstOrDefaultAsync(c => c.Id == id) : null;
-            var hotel = (flight == null && carRental == null) ? await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id) : null;
-
-            // If no services are found with the given ID, return NotFound
-            if (flight == null && carRental == null && hotel == null)
+            if (id == null || string.IsNullOrEmpty(type))
             {
                 return NotFound();
             }
 
-            // Create a new Booking model, and populate it with the found service
-            var model = new Booking
-            {
-                // Populate with common properties if any
-            };
+            Booking booking = new Booking();
 
-            // Add additional service-specific details to the booking model if needed
-            if (flight != null)
+            switch (type.ToLower())
             {
-                // Populate booking model with flight-specific details
-            }
-            else if (carRental != null)
-            {
-                // Populate booking model with car rental-specific details
-            }
-            else if (hotel != null)
-            {
-                // Populate booking model with hotel-specific details
+                case "flight":
+                    var flight = await _context.Flights.FirstOrDefaultAsync(f => f.Id == id);
+                    if (flight != null)
+                    {
+                        booking.ServiceId = flight.Id;
+                        booking.Type = "Flight";
+                    }
+                    break;
+                case "carrental":
+                    var carRental = await _context.CarRentals.FirstOrDefaultAsync(c => c.Id == id);
+                    if (carRental != null)
+                    {
+                        booking.ServiceId = carRental.Id;
+                        booking.Type = "CarRental";
+                    }
+                    break;
+                case "hotel":
+                    var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id);
+                    if (hotel != null)
+                    {
+                        booking.ServiceId = hotel.Id;
+                        booking.Type = "Hotel";
+                    }
+                    break;
+                default:
+                    return NotFound();
             }
 
-            return View(model);
+            if (booking.ServiceId <= 0)
+            {
+                return NotFound();
+            }
+
+            return View(booking);
         }
-
 
         // POST: Process booking confirmation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmBooking(Booking model)
+        public async Task<IActionResult> ConfirmBooking(Booking booking)
         {
             if (ModelState.IsValid)
             {
-                // Convert BookingViewModel to your Booking entity
-                var booking = new Booking
-                {
-                    // Map properties from BookingViewModel to Booking entity
-                    ClientId = model.ClientId,
-                    ServiceId = model.Id,
-                    // Include other properties such as GuestCount, StartDate, EndDate
-                };
-
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
-
-                // Redirect to a confirmation/thank you page, assuming such an action exists
-                return RedirectToAction("ThankYou", new { id = booking.Id }); // Adjust "ThankYou" to your actual confirmation view/action
+                return RedirectToAction("ThankYou", new { id = booking.Id });
             }
-
-            // If we got this far, something failed; re-display form
-            return View(model);
+            return View(booking);
         }
 
-        // Other methods...
+        // Other controller methods...
 
         private bool BookingExists(int id)
         {

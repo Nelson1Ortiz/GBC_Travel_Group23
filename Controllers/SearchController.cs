@@ -37,15 +37,24 @@ namespace GBC_Travel_Group23.Controllers
             }
 
             // This action is for searching hotels based on location
-            public IActionResult SearchHotels(int locationId)
+            public IActionResult SearchHotels(string country, string city)
             {
+                var location = _context.Locations.FirstOrDefault(l => l.Country == country && l.City == city);
+
+                if (location == null)
+                {
+                    // Handle the case where the location is not found
+                    return View("NotFound");
+                }
+
                 var hotels = _context.Hotels
                     .Include(h => h.Location)
-                    .Where(h => h.LocationId == locationId)
+                    .Where(h => h.LocationId == location.Id)
                     .ToList();
 
                 return View(hotels);
             }
+
 
             public IActionResult HotelDetails(int id)
             {
