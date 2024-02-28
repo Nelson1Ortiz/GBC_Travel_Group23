@@ -14,7 +14,132 @@ namespace GBC_Travel_Group23.Controllers
         }
 
         [HttpPost]
-        
+        public IActionResult SearchListings(bool searchHotels, bool searchCars, bool searchFlights, string from, string to, DateTime startDate, DateTime endDate)
+        {
+            Location departureLocation = getLocationFromString(from);
+            Location arrivalLocation = getLocationFromString(to);
+            if (searchFlights)
+            {
+                var availableDepartureFlights = _context.Flights
+                    .Include(f => f.DepartureLocation)
+                    .Include(f => f.ArrivalLocation)
+                    .Select(flight => new
+                    {
+                        Flight = flight,
+                        BookedSeats = _context.Bookings
+                            .Where(b => b.ServiceId == flight.Id &&
+                                        b.Type == "flight" &&
+                                        b.StartDate == startDate)
+                            .Sum(b => b.GuestCount)
+                    })
+                    .Where(result => result.BookedSeats < result.Flight.TotalSeats)
+                    .Select(result => new
+                    {
+                        result.Flight.Id,
+                        result.Flight.DepartureLocation,
+                        result.Flight.ArrivalLocation,
+                        result.Flight.DepartureDate,
+                        result.Flight.TotalSeats,
+                        AvailableSeats = result.Flight.TotalSeats - result.BookedSeats
+                    })
+                    .ToList();
+
+                var availableReturnFlights = _context.Flights
+                    .Include(f => f.DepartureLocation)
+                    .Include(f => f.ArrivalLocation)
+                    .Select(flight => new
+                    {
+                        Flight = flight,
+                        BookedSeats = _context.Bookings
+                            .Where(b => b.ServiceId == flight.Id &&
+                                        b.Type == "flight" &&
+                                        b.StartDate == endDate)
+                            .Sum(b => b.GuestCount)
+                    })
+                    .Where(result => result.BookedSeats < result.Flight.TotalSeats)
+                    .Select(result => new
+                    {
+                        result.Flight.Id,
+                        result.Flight.DepartureLocation,
+                        result.Flight.ArrivalLocation,
+                        result.Flight.DepartureDate,
+                        result.Flight.TotalSeats,
+                        AvailableSeats = result.Flight.TotalSeats - result.BookedSeats
+                    })
+                    .ToList();
+
+                ViewBag.departureFlights = availableDepartureFlights;
+                ViewBag.returnFlights = availableReturnFlights;
+            } else {
+                ViewBag.departureFlights = false;
+                ViewBag.returnFlights = false;
+            }
+
+            if (searchCars)
+            {
+                var availableCarRentals = _context.CarRentals
+                    .Where(carRental => carRental.LocationId == arrivalLocation.Id)
+                    .Select(carRental => new
+                        {
+                            CarRental = carRental,
+                            BookedCars = _context.Bookings
+                                .Where(b => b.ServiceId == carRental.Id &&
+                                            b.Type == "car" &&
+                                            b.StartDate < startDate &&
+                                            b.EndDate > endDate)
+                                .Sum(b => b.GuestCount)
+                        })
+                    .Where(r => r.BookedCars < r.CarRental.Count)
+                    .Select(r => new
+                    {
+                        r.CarRental.Id,
+                        r.CarRental.Make,
+                        r.CarRental.Model,
+                        r.CarRental.CarYear,
+                        r.CarRental.Capacity,
+                        AvailableCars = r.CarRental.Count - r.BookedCars,
+                        r.CarRental.Rate
+                    })
+                    .ToList();
+                ViewBag.CarRentals = availableCarRentals;
+            } else
+            {
+                ViewBag.CarRentals = false;
+            }
+            if (searchHotels) 
+            {
+                var availableHotelRooms = _context.HotelRooms
+                    .Where(hotelRoom => hotelRoom.Hotel!.LocationId == arrivalLocation.Id)
+                    .Select(hotelRoom => new
+                    {
+                        HotelRoom = hotelRoom,
+                        BookedRooms = _context.Bookings
+                            .Where(b => b.ServiceId == hotelRoom.Id &&
+                                        b.Type == "hotel" &&
+                                        b.StartDate < startDate &&
+                                        b.EndDate > endDate)
+                            .Sum(b => b.GuestCount)
+                    })
+                    .Where(result => result.BookedRooms < result.HotelRoom.RoomCount)
+                    .Select(result => new
+                    {
+                        result.HotelRoom.Id,
+                        result.HotelRoom.RoomName,
+                        result.HotelRoom.MaxOccupants,
+                        result.HotelRoom.Amenities,
+                        result.HotelRoom.RoomCount,
+                        AvailableRooms = result.HotelRoom.RoomCount - result.BookedRooms,
+                        result.HotelRoom.Rate
+                    })
+                    .ToList();
+                ViewBag.HotelRooms = availableHotelRooms;
+            } else
+            {
+                ViewBag.Hotelrooms = false;
+            }
+            return View();
+
+        }
 
         [HttpPost]
         public IActionResult SearchFlights(string from, string to, DateTime departureDate)
