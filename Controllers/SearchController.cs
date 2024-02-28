@@ -166,7 +166,6 @@ namespace GBC_Travel_Group23.Controllers
             return View(viewModel);
 
         }
-
         //used to get the location data from the 'city, Country' string format
         //because the dropdowns are populated with the location data it will never be null
         public Location getLocationFromString(string location)
@@ -175,9 +174,6 @@ namespace GBC_Travel_Group23.Controllers
             return _context.Locations
                 .FirstOrDefault(l => l.City == parts[0] && l.Country == parts[1])!;
         }
-
-
-        
         public IActionResult HotelDetails(int id)
         {
             var hotel = _context.Hotels
