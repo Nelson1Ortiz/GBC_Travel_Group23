@@ -1,4 +1,4 @@
-﻿@page
+﻿@model GBC_Travel_Group23.ViewModels.SearchViewModel
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,35 +8,32 @@
     <div>
         <label>I am looking for:</label>
         <div>
-            <input name="searchHotels" type="checkbox" />
-            <label>Hotels</label>
-
-            <input name="searchCars" type="checkbox" />
-            <label>Car Rentals</label>
-
-            <input name="searchFlights" type="checkbox" />
-            <label>Flights</label>
+            <select name="searchOptions" asp-for="SearchOptions" class="form-control" multiple required>
+                <option value="Hotels">Hotels</option>
+                <option value="CarRentals">Car Rentals</option>
+                <option value="Flights">Flights</option>
+            </select>
         </div>
     </div>
 
     <div>
         <label>Where are you coming from?:</label>
-        <select required name="from" class="form-control" id="FromLocationDropdown"></select>
+        <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
     </div>
 
     <div>
         <label>Where are you going?:</label>
-        <select required name="to" class="form-control" id="ToLocationDropdown"></select>
+        <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
     </div>
 
     <div>
         <label>Arrival Date:</label>
-        <input required name="startDate" type="date" />
+        <input required name="StartDate" asp-for="StartDate" type="date" />
     </div>
 
     <div>
         <label>Departure Date:</label>
-        <input required name="endDate" type="date" />
+        <input required name="EndDate" asp-for="EndDate" type="date" />
     </div>
 
     <button type="submit">Search</button>

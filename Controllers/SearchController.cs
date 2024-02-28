@@ -1,5 +1,6 @@
 ﻿using GBC_Travel_Group23.Data;
 using GBC_Travel_Group23.Models;
+using GBC_Travel_Group23.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,76 +15,93 @@ namespace GBC_Travel_Group23.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchListings(bool searchHotels, bool searchCars, bool searchFlights, string from, string to, DateTime startDate, DateTime endDate)
+        public IActionResult SearchListings(SearchViewModel model)
         {
+            bool searchHotels = model.SearchHotels;
+            bool searchCars = model.SearchCars;
+            bool searchFlights = model.SearchFlights;
+            string from = model.From;
+            string to = model.To;
+            DateTime startDate = model.StartDate;
+            DateTime endDate = model.EndDate;
             Location departureLocation = getLocationFromString(from);
             Location arrivalLocation = getLocationFromString(to);
+            ViewBag.SearchFlights = searchFlights;
+            ViewBag.SearchCars = searchCars;
+            ViewBag.SearchHotels = searchHotels;
+
+
             if (searchFlights)
             {
                 var availableDepartureFlights = _context.Flights
                     .Include(f => f.DepartureLocation)
                     .Include(f => f.ArrivalLocation)
-                    .Select(flight => new
+                    .Where(f => f.DepartureLocation == departureLocation &&
+                                     f.ArrivalLocation == arrivalLocation
+                    )
+                    .Select(f => new
                     {
-                        Flight = flight,
+                        Flight = f,
                         BookedSeats = _context.Bookings
-                            .Where(b => b.ServiceId == flight.Id &&
+                            .Where(b => b.ServiceId == f.Id &&
                                         b.Type == "flight" &&
                                         b.StartDate == startDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(result => result.BookedSeats < result.Flight.TotalSeats)
-                    .Select(result => new
+                    .Where(r => r.BookedSeats < r.Flight.TotalSeats)
+                    .Select(r => new
                     {
-                        result.Flight.Id,
-                        result.Flight.DepartureLocation,
-                        result.Flight.ArrivalLocation,
-                        result.Flight.DepartureDate,
-                        result.Flight.TotalSeats,
-                        AvailableSeats = result.Flight.TotalSeats - result.BookedSeats
+                        r.Flight.Id,
+                        r.Flight.FlightCode,
+                        DepartureLocation = $"{r.Flight.DepartureLocation.City}, {r.Flight.DepartureLocation.Country}",
+                        ArrivalLocation = $"{r.Flight.ArrivalLocation.City}, {r.Flight.ArrivalLocation.Country}",
+                        DepartureDate = r.Flight.DepartureDate.Date,
+                        r.Flight.TotalSeats,
+                        AvailableSeats = r.Flight.TotalSeats - r.BookedSeats
                     })
                     .ToList();
 
                 var availableReturnFlights = _context.Flights
                     .Include(f => f.DepartureLocation)
                     .Include(f => f.ArrivalLocation)
-                    .Select(flight => new
+                    .Where(f => f.DepartureLocation == arrivalLocation &&
+                                     f.ArrivalLocation == departureLocation
+                    )
+                    .Select(f => new
                     {
-                        Flight = flight,
+                        Flight = f,
                         BookedSeats = _context.Bookings
-                            .Where(b => b.ServiceId == flight.Id &&
+                            .Where(b => b.ServiceId == f.Id &&
                                         b.Type == "flight" &&
                                         b.StartDate == endDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(result => result.BookedSeats < result.Flight.TotalSeats)
-                    .Select(result => new
+                    .Where(r => r.BookedSeats < r.Flight.TotalSeats)
+                    .Select(r => new
                     {
-                        result.Flight.Id,
-                        result.Flight.DepartureLocation,
-                        result.Flight.ArrivalLocation,
-                        result.Flight.DepartureDate,
-                        result.Flight.TotalSeats,
-                        AvailableSeats = result.Flight.TotalSeats - result.BookedSeats
+                        r.Flight.Id,
+                        r.Flight.FlightCode,
+                        DepartureLocation = $"{r.Flight.DepartureLocation.City}, {r.Flight.DepartureLocation.Country}",
+                        ArrivalLocation = $"{r.Flight.ArrivalLocation.City}, {r.Flight.ArrivalLocation.Country}",
+                        DepartureDate = r.Flight.DepartureDate.Date,
+                        r.Flight.TotalSeats,
+                        AvailableSeats = r.Flight.TotalSeats - r.BookedSeats
                     })
                     .ToList();
 
-                ViewBag.departureFlights = availableDepartureFlights;
-                ViewBag.returnFlights = availableReturnFlights;
-            } else {
-                ViewBag.departureFlights = false;
-                ViewBag.returnFlights = false;
+                ViewBag.AvailableDepartureFlights = availableDepartureFlights;
+                ViewBag.AvailableReturnFlights = availableReturnFlights;
             }
 
             if (searchCars)
             {
                 var availableCarRentals = _context.CarRentals
-                    .Where(carRental => carRental.LocationId == arrivalLocation.Id)
-                    .Select(carRental => new
+                    .Where(c => c.LocationId == arrivalLocation.Id)
+                    .Select(c => new
                         {
-                            CarRental = carRental,
+                            CarRental = c,
                             BookedCars = _context.Bookings
-                                .Where(b => b.ServiceId == carRental.Id &&
+                                .Where(b => b.ServiceId == c.Id &&
                                             b.Type == "car" &&
                                             b.StartDate < startDate &&
                                             b.EndDate > endDate)
@@ -101,59 +119,40 @@ namespace GBC_Travel_Group23.Controllers
                         r.CarRental.Rate
                     })
                     .ToList();
-                ViewBag.CarRentals = availableCarRentals;
-            } else
-            {
-                ViewBag.CarRentals = false;
+                ViewBag.AvailableCarRentals = availableCarRentals;
             }
             if (searchHotels) 
             {
                 var availableHotelRooms = _context.HotelRooms
-                    .Where(hotelRoom => hotelRoom.Hotel!.LocationId == arrivalLocation.Id)
-                    .Select(hotelRoom => new
+                    .Include(hr => hr.Hotel)
+                    .Where(hr => hr.Hotel!.LocationId == arrivalLocation.Id)
+                    .Select(hr => new
                     {
-                        HotelRoom = hotelRoom,
+                        HotelRoom = hr,
                         BookedRooms = _context.Bookings
-                            .Where(b => b.ServiceId == hotelRoom.Id &&
+                            .Where(b => b.ServiceId == hr.Id &&
                                         b.Type == "hotel" &&
                                         b.StartDate < startDate &&
                                         b.EndDate > endDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(result => result.BookedRooms < result.HotelRoom.RoomCount)
-                    .Select(result => new
+                    .Where(r => r.BookedRooms < r.HotelRoom.RoomCount)
+                    .Select(r => new
                     {
-                        result.HotelRoom.Id,
-                        result.HotelRoom.RoomName,
-                        result.HotelRoom.MaxOccupants,
-                        result.HotelRoom.Amenities,
-                        result.HotelRoom.RoomCount,
-                        AvailableRooms = result.HotelRoom.RoomCount - result.BookedRooms,
-                        result.HotelRoom.Rate
+                        r.HotelRoom.Id,
+                        r.HotelRoom.Hotel!.Name,
+                        r.HotelRoom.RoomName,
+                        r.HotelRoom.MaxOccupants,
+                        r.HotelRoom.Amenities,
+                        r.HotelRoom.RoomCount,
+                        AvailableRooms = r.HotelRoom.RoomCount - r.BookedRooms,
+                        r.HotelRoom.Rate
                     })
                     .ToList();
-                ViewBag.HotelRooms = availableHotelRooms;
-            } else
-            {
-                ViewBag.Hotelrooms = false;
+                ViewBag.AvailableHotelRooms = availableHotelRooms;
             }
             return View();
 
-        }
-
-        [HttpPost]
-        public IActionResult SearchFlights(string from, string to, DateTime departureDate)
-        {
-            // Assuming you have a dbContext to interact with your database
-            var flights = _context.Flights
-                .Include(f => f.DepartureLocation)
-                .Include(f => f.ArrivalLocation)
-                .Where(f => f.DepartureLocation.AirportCode == from &&
-                            f.ArrivalLocation.AirportCode == to &&
-                            f.DepartureDate.Date == departureDate.Date)
-                .ToList();
-
-            return View(flights);
         }
 
         //used to get the location data from the 'city, Country' string format
@@ -166,25 +165,7 @@ namespace GBC_Travel_Group23.Controllers
         }
 
 
-        // This action is for searching hotels based on location
-        public IActionResult SearchHotels(string country, string city)
-        {
-            var location = _context.Locations.FirstOrDefault(l => l.Country == country && l.City == city);
-
-            if (location == null)
-            {
-                // Handle the case where the location is not found
-                return View("NotFound");
-            }
-
-            var hotels = _context.Hotels
-                .Include(h => h.Location)
-                .Where(h => h.LocationId == location.Id)
-                .ToList();
-
-            return View(hotels);
-        }
-
+        
         public IActionResult HotelDetails(int id)
         {
             var hotel = _context.Hotels
@@ -199,14 +180,6 @@ namespace GBC_Travel_Group23.Controllers
             return View(hotel);
         }
 
-        public IActionResult SearchCarRentals(int locationId)
-        {
-            var carRentals = _context.CarRentals
-                .Include(cr => cr.Location)
-                .Where(cr => cr.LocationId == locationId)
-                .ToList();
-
-            return View(carRentals);
-        }
+       
     }
 }

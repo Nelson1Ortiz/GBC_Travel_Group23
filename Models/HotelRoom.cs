@@ -12,7 +12,7 @@
             [ForeignKey("Hotel")]
             public int HotelId { get; set; }
 
-            public Hotel? Hotel { get; set; } 
+            public Hotel Hotel { get; set; }
 
             [Required] public string RoomName { get; set; } = string.Empty;
 

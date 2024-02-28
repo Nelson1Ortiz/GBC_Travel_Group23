@@ -2,6 +2,7 @@ using GBC_Travel_Group23.Models;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using GBC_Travel_Group23.Data;
+using GBC_Travel_Group23.ViewModels;
 
 namespace GBC_Travel_Group23.Controllers
 {
@@ -24,8 +25,9 @@ namespace GBC_Travel_Group23.Controllers
             {
                 locationsData.Add($"{location.City}, {location.Country}");
             }
-            ViewBag.LocationsData = locationsData; 
-            return View();
+            ViewBag.LocationsData = locationsData;
+            SearchViewModel viewModel = new SearchViewModel();
+            return View(viewModel);
         }
         public IActionResult About()
         {

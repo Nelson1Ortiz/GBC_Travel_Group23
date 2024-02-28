@@ -1,0 +1,159 @@
+﻿@page
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Listings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <ul class="nav nav-tabs" role="tablist">
+        @if (ViewBag.SearchFlights)
+        {
+            <li class="nav-item">
+                <a class="nav-link active" id="Flights-tab" data-toggle="tab" href="#Flights" role="tab">Flights</a>
+            </li>
+        }
+
+        @if (ViewBag.SearchCars)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="carRentals-tab" data-toggle="tab" href="#carRentals" role="tab">Car Rentals</a>
+            </li>
+        }
+
+        @if (ViewBag.SearchHotels)
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="hotelRooms-tab" data-toggle="tab" href="#hotelRooms" role="tab">Hotel Rooms</a>
+            </li>
+        }
+    </ul>
+
+    <div class="tab-content">
+        @if (ViewBag.SearchFlights)
+        {
+            <div class="tab-pane fade show active" id="Flights" role="tabpanel">
+                <h3>Departing Flights</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Flight Code</th>
+                            <th>Departure Location</th>
+                            <th>Arrival Location</th>
+                            <th>Departure Date</th>
+                            <th>Total Seats</th>
+                            <th>Available Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var flight in ViewBag.AvailableDepartureFlights)
+                        {
+                            <tr>
+                                <td>@flight.FlightCode</td>
+                                <td>@flight.DepartureLocation</td>
+                                <td>@flight.ArrivalLocation</td>
+                                <td>@flight.DepartureDate</td>
+                                <td>@flight.TotalSeats</td>
+                                <td>@flight.AvailableSeats</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h3>Returning Flights</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Flight Code</th>
+                            <th>Departure Location</th>
+                            <th>Arrival Location</th>
+                            <th>Departure Date</th>
+                            <th>Total Seats</th>
+                            <th>Available Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var flight in ViewBag.AvailableReturnFlights)
+                        {
+                            <tr>
+                                <td>@flight.FlightCode</td>
+                                <td>@flight.DepartureLocation</td>
+                                <td>@flight.ArrivalLocation</td>
+                                <td>@flight.DepartureDate</td>
+                                <td>@flight.TotalSeats</td>
+                                <td>@flight.AvailableSeats</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        @if (ViewBag.SearchCars)
+        {
+            <div class="tab-pane fade" id="carRentals" role="tabpanel">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Capacity</th>
+                            <th>Cars Available</th>
+                            <th>Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var carRental in ViewBag.AvailableCarRentals)
+                        {
+                            <tr>
+                                <td>@carRental.Make</td>
+                                <td>@carRental.Model</td>
+                                <td>@carRental.CarYear</td>
+                                <td>@carRental.Capacity</td>
+                                <td>@carRental.AvailableCars</td>
+                                <td>$@carRental.Rate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        @if (ViewBag.SearchHotels)
+            {
+            <div class="tab-pane fade" id="hotelRooms" role="tabpanel">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Hotel Name</th>
+                            <th>Room Name</th>
+                            <th>Amenities</th>
+                            <th>Max Occupants</th>
+                            <th>Available Rooms</th>
+                            <th>Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var hotelRoom in ViewBag.AvailableHotelRooms)
+                        {
+                            <tr>
+                                <td>@hotelRoom.RoomName</td>
+                                <td>@hotelRoom.MaxOccupants</td>
+                                <td>@hotelRoom.Rate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/%4popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
