@@ -1,0 +1,57 @@
+﻿@model GBC_Travel_Group23.Models.HotelRoom
+
+@{
+    ViewData["Title"] = "AddHotelRoom";
+}
+
+<h1>AddHotelRoom</h1>
+
+<h4>HotelRoom</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddHotelRoom">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HotelId" class="control-label"></label>
+                <select asp-for="HotelId" class ="form-control" asp-items="ViewBag.HotelId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomName" class="control-label"></label>
+                <input asp-for="RoomName" class="form-control" />
+                <span asp-validation-for="RoomName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxOccupants" class="control-label"></label>
+                <input asp-for="MaxOccupants" class="form-control" />
+                <span asp-validation-for="MaxOccupants" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amenities" class="control-label"></label>
+                <input asp-for="Amenities" class="form-control" />
+                <span asp-validation-for="Amenities" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomCount" class="control-label"></label>
+                <input asp-for="RoomCount" class="form-control" />
+                <span asp-validation-for="RoomCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rate" class="control-label"></label>
+                <input asp-for="Rate" class="form-control" />
+                <span asp-validation-for="Rate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

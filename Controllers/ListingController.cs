@@ -37,5 +37,25 @@ namespace GBC_Travel_Group23.Controllers
 
             return View();
         }
+
+        public IActionResult AddFlight()
+        {
+            return View();
+        }
+
+        public IActionResult AddHotel() 
+        {
+            return View();
+        }
+        public IActionResult AddHotelRoom() 
+        {
+            return View();
+        }
+
+        public IActionResult AddCarRental()
+        {
+            return View();
+        }
+
     }
 }
