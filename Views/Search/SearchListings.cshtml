@@ -12,9 +12,9 @@
 <body>
     <form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
         <div class="form-row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 d-flex flex-column align-items-center mx-auto">
                 <label for="searchOptions">I am looking for:</label>
-                <select name="searchOptions" asp-for="SearchOptions" class="form-control" multiple required>
+                <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
                     <option value="Hotels">Hotels</option>
                     <option value="CarRentals">Car Rentals</option>
                     <option value="Flights">Flights</option>
@@ -45,8 +45,9 @@
                 <input required name="EndDate" asp-for="EndDate" type="date" class="form-control" value="@DateTime.Now.AddDays(6).ToString("yyyy-MM-dd")" />
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Search</button>
+        <div class="form-row d-flex flex-column align-items-center">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
     </form>
     <ul class="nav nav-tabs" role="tablist">
         @if (ViewBag.SearchFlights)
@@ -136,7 +137,7 @@
 
         @if (ViewBag.SearchCars)
         {   
-            <div class="tab-pane fade" id="carRentals" role="tabpanel">
+            <div class="tab-pane fade @(!ViewBag.SearchFlights ? "show active" : "")" id="carRentals" role="tabpanel">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -167,7 +168,7 @@
 
         @if (ViewBag.SearchHotels)
             {
-            <div class="tab-pane fade" id="hotelRooms" role="tabpanel">
+            <div class="tab-pane fade @(!ViewBag.SearchFlights && !ViewBag.SearchCars ? "show active" : "")" id="hotelRooms" role="tabpanel">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
