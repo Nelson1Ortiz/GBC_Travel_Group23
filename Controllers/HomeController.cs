@@ -24,7 +24,7 @@ namespace GBC_Travel_Group23.Controllers
             {
                 locationsData.Add($"{location.City}, {location.Country}");
             }
-            ViewBag.LocationsData = locationsData;
+            ViewBag.LocationsData = locationsData; 
             return View();
         }
         public IActionResult About()

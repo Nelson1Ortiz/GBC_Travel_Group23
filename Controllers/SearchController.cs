@@ -14,7 +14,50 @@ namespace GBC_Travel_Group23.Controllers
         }
 
         [HttpPost]
-        
+        public IActionResult SearchListings(bool searchHotels, bool searchCars, bool searchFlights, string from, string to, DateTime startDate, DateTime endDate)
+        {
+            Location departureLocation = getLocationFromString(from);
+            Location arrivalLocation = getLocationFromString(to);
+            if (searchFlights)
+            {
+                var departureFlights = _context.Flights
+                    .Include(f => f.DepartureLocation)
+                    .Include(f => f.ArrivalLocation)
+                    .Where(f => f.DepartureLocation == departureLocation &&
+                                f.ArrivalLocation == arrivalLocation &&
+                                f.DepartureDate == startDate)
+                    .ToList();
+                var returnFlights = _context.Flights
+                    .Include(f => f.DepartureLocation)
+                    .Include(f => f.ArrivalLocation)
+                    .Where(f => f.DepartureLocation == arrivalLocation &&
+                                f.ArrivalLocation == departureLocation &&
+                                f.DepartureDate == endDate);
+                ViewBag.departureFlights = departureFlights;
+                ViewBag.returnFlights = returnFlights;
+            } else {
+                ViewBag.departureFlights = false;
+                ViewBag.returnFlights = false;
+            }
+
+            if (searchCars)
+            {
+                var Bookings = _context.Bookings
+                    .Include(b => b.CarRental )
+                    .Where(b => b.Type == "car").ToList();
+
+                var carRentals = _context.CarRentals
+                    .Include(c => c.Location)
+                    .Where(c => c.Location == arrivalLocation)
+                    .ToList();
+            }
+            if (searchHotels) 
+            {
+
+            }
+            return View();
+
+        }
 
         [HttpPost]
         public IActionResult SearchFlights(string from, string to, DateTime departureDate)
