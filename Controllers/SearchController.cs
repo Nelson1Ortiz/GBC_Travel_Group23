@@ -17,6 +17,16 @@ namespace GBC_Travel_Group23.Controllers
         [HttpPost]
         public IActionResult SearchListings(SearchViewModel model)
         {
+            var locations = _context.Locations;
+            List<string> locationsData = new List<string>();
+
+            foreach (var location in locations)
+            {
+                locationsData.Add($"{location.City}, {location.Country}");
+            }
+            ViewBag.LocationsData = locationsData;
+            SearchViewModel viewModel = new SearchViewModel();
+
             bool searchHotels = model.SearchHotels;
             bool searchCars = model.SearchCars;
             bool searchFlights = model.SearchFlights;
@@ -53,6 +63,7 @@ namespace GBC_Travel_Group23.Controllers
                     {
                         r.Flight.Id,
                         r.Flight.FlightCode,
+                        r.Flight.Airline,
                         DepartureLocation = $"{r.Flight.DepartureLocation.City}, {r.Flight.DepartureLocation.Country}",
                         ArrivalLocation = $"{r.Flight.ArrivalLocation.City}, {r.Flight.ArrivalLocation.Country}",
                         DepartureDate = r.Flight.DepartureDate.Date,
@@ -81,6 +92,7 @@ namespace GBC_Travel_Group23.Controllers
                     {
                         r.Flight.Id,
                         r.Flight.FlightCode,
+                        r.Flight.Airline,
                         DepartureLocation = $"{r.Flight.DepartureLocation.City}, {r.Flight.DepartureLocation.Country}",
                         ArrivalLocation = $"{r.Flight.ArrivalLocation.City}, {r.Flight.ArrivalLocation.Country}",
                         DepartureDate = r.Flight.DepartureDate.Date,
@@ -140,18 +152,18 @@ namespace GBC_Travel_Group23.Controllers
                     .Select(r => new
                     {
                         r.HotelRoom.Id,
-                        r.HotelRoom.Hotel!.Name,
+                        HotelName = r.HotelRoom.Hotel!.Name,
                         r.HotelRoom.RoomName,
-                        r.HotelRoom.MaxOccupants,
                         r.HotelRoom.Amenities,
-                        r.HotelRoom.RoomCount,
+                        r.HotelRoom.MaxOccupants,
                         AvailableRooms = r.HotelRoom.RoomCount - r.BookedRooms,
+                        r.HotelRoom.RoomCount,
                         r.HotelRoom.Rate
                     })
                     .ToList();
                 ViewBag.AvailableHotelRooms = availableHotelRooms;
             }
-            return View();
+            return View(viewModel);
 
         }
 

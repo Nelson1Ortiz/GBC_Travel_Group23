@@ -4,10 +4,10 @@
 }
 <h2>Search Form</h2>
 
-<form method="post" asp-controller="Search" asp-action="SearchListings">
-    <div>
-        <label>I am looking for:</label>
-        <div>
+<form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="searchOptions">I am looking for:</label>
             <select name="searchOptions" asp-for="SearchOptions" class="form-control" multiple required>
                 <option value="Hotels">Hotels</option>
                 <option value="CarRentals">Car Rentals</option>
@@ -16,27 +16,31 @@
         </div>
     </div>
 
-    <div>
-        <label>Where are you coming from?:</label>
-        <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="FromLocationDropdown">Where are you coming from?:</label>
+            <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="ToLocationDropdown">Where are you going?:</label>
+            <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
+        </div>
     </div>
 
-    <div>
-        <label>Where are you going?:</label>
-        <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="StartDate">Arrival Date:</label>
+            <input required name="StartDate" asp-for="StartDate" type="date" class="form-control" value="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="EndDate">Departure Date:</label>
+            <input required name="EndDate" asp-for="EndDate" type="date" class="form-control" value="@DateTime.Now.AddDays(6).ToString("yyyy-MM-dd")" />
+        </div>
     </div>
 
-    <div>
-        <label>Arrival Date:</label>
-        <input required name="StartDate" asp-for="StartDate" type="date" />
-    </div>
-
-    <div>
-        <label>Departure Date:</label>
-        <input required name="EndDate" asp-for="EndDate" type="date" />
-    </div>
-
-    <button type="submit">Search</button>
+    <button type="submit" class="btn btn-primary">Search</button>
 </form>
 
 @section Scripts {
@@ -44,7 +48,6 @@
         $(document).ready(function () {
             // Assuming locationsData is a JavaScript array containing data in the format "City, Country"
             var locationsData = @Html.Raw(Json.Serialize(ViewBag.LocationsData));
-
             var FromLocationDropdown = $("#FromLocationDropdown");
             $.each(locationsData, function (index, location) {
                 FromLocationDropdown.append($('<option>', {
@@ -60,8 +63,44 @@
                     text: location
                 }));
             });
-
-
         });
+
+        function validateSearch() {
+            for (let element of document.querySelectorAll(".form-control")) {
+                element.classList.add('is-valid');
+                element.classList.remove('is-invalid');
+            }
+            var isValid = true;
+            var alertMsg = "";
+            var startDate = document.getElementsByName("StartDate")[0];
+            var endDate = document.getElementsByName("EndDate")[0];
+            var from = document.getElementsByName("From")[0]
+            var to = document.getElementsByName("To")[0]
+            var services = document.getElementsByName("searchOptions")[0]
+            if (new Date(startDate.value) >= new Date(endDate.value)) {
+                alertMsg += "Departure date must be after the arrival date.\n";
+                startDate.classList.remove('is-valid');
+                endDate.classList.remove('is-valid');
+                startDate.classList.add('is-invalid');
+                endDate.classList.add('is-invalid');
+                isValid = false;
+            }
+            if (services.selectedOptions.length === 0) {
+                alertMsg += "At least one service must be selected\n";
+                services.classList.remove('is-valid');
+                services.classList.add('is-invalid');
+                isValid = false;
+            } 
+            if (from.value == to.value) {
+                alertMsg += "Locations can not be identical.\n";
+                from.classList.remove('is-valid');
+                to.classList.remove('is-valid');
+                from.classList.add('is-invalid');
+                to.classList.add('is-invalid');
+                isValid = false;
+            }
+            if (!isValid) { alert(alertMsg); }
+            return isValid;
+        }
     </script>
 }
