@@ -42,7 +42,8 @@ namespace GBC_Travel_Group23.Controllers
         [HttpGet]
         public IActionResult AddFlight()
         {
-            
+            ViewBag.DepartureLocationId = new SelectList(await _context.Locations.ToListAsync(), "Id", "Name");
+            ViewBag.ArrivalLocationId = new SelectList(await _context.Locations.ToListAsync(), "Id", "Name");
             return View();
         }
 
@@ -59,10 +60,10 @@ namespace GBC_Travel_Group23.Controllers
             return View(flight);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> AddHotel()
         {
-            // Fetch the locations from the database
+            
             var locations = await _context.Locations
                 .Select(l => new SelectListItem
                 {
@@ -71,7 +72,7 @@ namespace GBC_Travel_Group23.Controllers
                 })
                 .ToListAsync();
 
-            // Pass the locations to the view for the dropdown
+            
             ViewBag.LocationId = locations;
 
             return View();
@@ -85,10 +86,11 @@ namespace GBC_Travel_Group23.Controllers
             {
                 _context.Add(hotel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(BookNow)); // Or wherever you'd like to redirect
+
+                
+                return RedirectToAction("AddHotelRoom", new { hotelId = hotel.Id });
             }
 
-            // If we get here, something went wrong. Re-populate the LocationId dropdown.
             ViewBag.LocationId = await _context.Locations
                 .Select(l => new SelectListItem
                 {
@@ -101,13 +103,23 @@ namespace GBC_Travel_Group23.Controllers
         }
 
 
+
         [HttpGet]
-        public IActionResult AddHotelRoom()
+        public async Task<IActionResult> AddHotelRoom(int? hotelId)
         {
-            
-            ViewBag.Hotels = new SelectList(_context.Hotels, "Id", "Name");
+            var hotelsSelectList = await _context.Hotels
+                .Select(h => new SelectListItem
+                {
+                    Value = h.Id.ToString(),
+                    Text = h.Name,
+                    Selected = h.Id == hotelId 
+                })
+                .ToListAsync();
+
+            ViewBag.Hotels = new SelectList(hotelsSelectList, "Value", "Text");
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -117,9 +129,13 @@ namespace GBC_Travel_Group23.Controllers
             {
                 _context.Add(hotelRoom);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(BookNow));
+                return RedirectToAction("HotelDetails", new { id = hotelRoom.HotelId });
             }
-          
+          //instead of redirecting it to the HotelDeatils page we need to make it go to the listing view.... make sure to add this functionality
+          //to all the post actions in this controller to make sure they can see the recent object made
+
+
+
             ViewBag.Hotels = new SelectList(_context.Hotels, "Id", "Name");
             return View(hotelRoom);
         }
