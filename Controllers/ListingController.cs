@@ -38,14 +38,16 @@ namespace GBC_Travel_Group23.Controllers
 
             return View();
         }
-        
+
         [HttpGet]
-        public IActionResult AddFlight()
+        public async Task<IActionResult> AddFlight()
         {
-            ViewBag.DepartureLocationId = new SelectList(await _context.Locations.ToListAsync(), "Id", "Name");
-            ViewBag.ArrivalLocationId = new SelectList(await _context.Locations.ToListAsync(), "Id", "Name");
+            var locationOptions = new SelectList(await _context.Locations.OrderBy(l => l.City).ToListAsync(), "Id", "City");
+            ViewBag.DepartureLocationId = locationOptions;
+            ViewBag.ArrivalLocationId = locationOptions;
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

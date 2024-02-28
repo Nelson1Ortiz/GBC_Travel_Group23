@@ -11,6 +11,7 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-action="AddFlight" method="post">
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Airline" class="control-label"></label>
@@ -28,14 +29,13 @@
                 <span asp-validation-for="FlightCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DepartureLocationId" class="control-label">Departure Location</label>
-                <select asp-for="DepartureLocationId" class="form-control" asp-items="ViewBag.DepartureLocationId"></select>
-                <span asp-validation-for="DepartureLocationId" class="text-danger"></span>
+                <label asp-for="DepartureLocationId">Departure Location</label>
+                <select asp-for="DepartureLocationId" class="form-control" asp-items="@ViewBag.DepartureLocationId"></select>
             </div>
+
             <div class="form-group">
-                <label asp-for="ArrivalLocationId" class="control-label">Arrival Location</label>
-                <select asp-for="ArrivalLocationId" class="form-control" asp-items="ViewBag.ArrivalLocationId"></select>
-                <span asp-validation-for="ArrivalLocationId" class="text-danger"></span>
+                <label asp-for="ArrivalLocationId">Arrival Location</label>
+                <select asp-for="ArrivalLocationId" class="form-control" asp-items="@ViewBag.ArrivalLocationId"></select>
             </div>
 
             <div class="form-group">
@@ -69,6 +69,32 @@
     <a asp-controller="Home" asp-action="oldIndex">Back To Add Page</a>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        $(document).ready(function () {
+            
+            var locationsData = @Html.Raw(Json.Serialize(ViewBag.LocationsData));
+
+            var FromLocationDropdown = $("#FromLocationDropdown");
+            $.each(locationsData, function (index, location) {
+                FromLocationDropdown.append($('<option>', {
+                    value: location,
+                    text: location
+                }));
+            });
+
+            var ToLocationDropdown = $("#ToLocationDropdown");
+            $.each(locationsData, function (index, location) {
+                ToLocationDropdown.append($('<option>', {
+                    value: location,
+                    text: location
+                }));
+            });
+
+
+        });
+    </script>
 }
