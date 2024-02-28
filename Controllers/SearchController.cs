@@ -1,4 +1,5 @@
 ﻿using GBC_Travel_Group23.Data;
+using GBC_Travel_Group23.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ namespace GBC_Travel_Group23.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        
 
         [HttpPost]
         public IActionResult SearchFlights(string from, string to, DateTime departureDate)
@@ -26,6 +29,15 @@ namespace GBC_Travel_Group23.Controllers
                 .ToList();
 
             return View(flights);
+        }
+
+        //used to get the location data from the 'city, Country' string format
+        //because the dropdowns are populated with the location data it will never be null
+        public Location getLocationFromString(string location)
+        {
+            var parts = location.Split(", ");
+            return _context.Locations
+                .FirstOrDefault(l => l.City == parts[0] && l.Country == parts[1])!;
         }
 
 

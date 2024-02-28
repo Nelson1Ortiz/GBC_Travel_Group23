@@ -8,35 +8,35 @@
     <div>
         <label>I am looking for:</label>
         <div>
-            <input name="SearchForHotels" type="checkbox" />
+            <input name="searchHotels" type="checkbox" />
             <label>Hotels</label>
 
-            <input name="SearchForCarRentals" type="checkbox" />
+            <input name="searchCars" type="checkbox" />
             <label>Car Rentals</label>
 
-            <input name="SearchForFlights" type="checkbox" />
+            <input name="searchFlights" type="checkbox" />
             <label>Flights</label>
         </div>
     </div>
 
     <div>
         <label>Where are you coming from?:</label>
-        <select name="FromLocation" class="form-control" id="FromLocationDropdown"></select>
+        <select required name="from" class="form-control" id="FromLocationDropdown"></select>
     </div>
 
     <div>
         <label>Where are you going?:</label>
-        <select name="ToLocation" class="form-control" id="ToLocationDropdown"></select>
+        <select required name="to" class="form-control" id="ToLocationDropdown"></select>
     </div>
 
     <div>
         <label>Arrival Date:</label>
-        <input name="ArrivalDate" type="date" />
+        <input required name="arrivalDate" type="date" />
     </div>
 
     <div>
         <label>Departure Date:</label>
-        <input name="DepartureDate" type="date" />
+        <input required name="departureDate" type="date" />
     </div>
 
     <button type="submit">Search</button>
