@@ -10,11 +10,14 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddCarRental">
+        <form asp-action="AddCarRental"method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
-                <select asp-for="LocationId" class ="form-control" asp-items="ViewBag.LocationId"></select>
+                <label asp-for="LocationId" class="control-label">Location</label>
+                <select asp-for="LocationId" class="form-control" asp-items="ViewBag.LocationId">
+                    <option value="">-- Select a Location --</option>
+                </select>
+                <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Make" class="control-label"></label>
@@ -47,7 +50,7 @@
                 <span asp-validation-for="Rate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" value="Create" class="btn btn-primary">Add Car Rental</button>
             </div>
         </form>
     </div>
