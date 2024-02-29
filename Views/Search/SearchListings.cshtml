@@ -103,9 +103,9 @@
                                 <td>@flight.DepartureDate</td>
                                 <td>@flight.TotalSeats</td>
                                 <td>@flight.AvailableSeats</td>
-                                <td><a href="@Url.Action("Book", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("FlightDetails", "Flight", new { flightId = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteFlight", "Flight", new { flightId = flight.Id })" class="btn btn-danger">Delete</a></td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
@@ -137,9 +137,9 @@
                                 <td>@flight.DepartureDate</td>
                                 <td>@flight.TotalSeats</td>
                                 <td>@flight.AvailableSeats</td>
-                                <td><a href="@Url.Action("Book", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("FlightDetails", "Flight", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteFlight", "Flight", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
@@ -174,9 +174,9 @@
                                 <td>@carRental.Capacity</td>
                                 <td>@carRental.AvailableCars</td>
                                 <td>$@carRental.Rate</td>
-                                <td><a href="@Url.Action("Book", "Booking", new { type = "car", Id = carRental.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("CarRentalDetails", "CarRental", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteCarRental", "CarRental", new { Id = carRental.Id })" class="btn btn-danger">Delete</a></td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "car", Id = carRental.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteCarRental", "Listing", new { Id = carRental.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
@@ -211,9 +211,9 @@
                                 <td>@hotelRoom.MaxOccupants</td>
                                 <td>@hotelRoom.AvailableRooms / @hotelRoom.RoomCount</td>
                                 <td>@hotelRoom.Rate</td>
-                                <td><a href="@Url.Action("Book", "Booking", new { type = "hotelroom", Id = hotelRoom.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("HotelRoomDetails", "HotelRoom", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteHotelRoom", "HotelRoom", new { Id = hotelRoom.Id })" class="btn btn-danger">Delete</a></td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "hotelroom", Id = hotelRoom.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteHotelRoom", "Listing", new { Id = hotelRoom.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
