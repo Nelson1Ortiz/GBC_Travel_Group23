@@ -100,6 +100,84 @@ namespace GBC_Travel_Group23.Controllers
         }
 
 
+        public async Task<IActionResult> FlightDetails(int id)
+        {
+            var flight = await _context.Flights
+                .Include(f => f.DepartureLocation)
+                .Include(f => f.ArrivalLocation)
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (flight == null)
+            {
+                return NotFound();
+            }
+
+            return View(flight);
+        }
+
+        public async Task<IActionResult> CarRentalDetails(int id)
+        {
+            var carRental = await _context.CarRentals
+                .Include(c => c.Location)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+
+            return View(carRental);
+        }
+
+        public async Task<IActionResult> HotelDetails(int id)
+        {
+            var hotel = await _context.Hotels
+                .Include(h => h.Location)
+                .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            return View(hotel);
+        }
+
+        public async Task<IActionResult> HotelRoomDetails(int id)
+        {
+            var hotelRoom = await _context.HotelRooms
+                .Include(hr => hr.Hotel)
+                .FirstOrDefaultAsync(hr => hr.Id == id);
+
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
+
+            return View(hotelRoom);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
+            if (hotel != null)
+            {
+                // If the hotel has rooms, delete them
+                if (hotel.Rooms.Any())
+                {
+                    _context.HotelRooms.RemoveRange(hotel.Rooms);
+                }
+
+                // Now delete the hotel
+                _context.Hotels.Remove(hotel);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index)); // Redirect to the list of hotels
+        }
+
 
 
 
