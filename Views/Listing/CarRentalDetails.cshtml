@@ -51,14 +51,50 @@
                     }
                     else
                     {
-                        <!-- Edit form fields for Car Rental -->
-                        <form asp-action="UpdateCarRental">
-                            <input type="hidden" asp-for="Id" />
-                            <!-- Add form fields here similar to the Flight details view form -->
+                        <form asp-controller="Listing" asp-action="UpdateCarRental" method="post">
+                            <input type="hidden" asp-for="Id" value="@Model.Id" />
+
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Update Car Rental</button>
+                                <label asp-for="Make" class="control-label">Make</label>
+                                <input asp-for="Make" class="form-control" />
+                                <span asp-validation-for="Make" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Model" class="control-label">Model</label>
+                                <input asp-for="Model" class="form-control" />
+                                <span asp-validation-for="Model" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="CarYear" class="control-label">Year</label>
+                                <input asp-for="CarYear" class="form-control" />
+                                <span asp-validation-for="CarYear" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Capacity" class="control-label">Capacity</label>
+                                <input asp-for="Capacity" class="form-control" />
+                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Count" class="control-label">Available Count</label>
+                                <input asp-for="Count" class="form-control" />
+                                <span asp-validation-for="Count" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Rate" class="control-label">Rate (per day)</label>
+                                <input asp-for="Rate" class="form-control" />
+                                <span asp-validation-for="Rate" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Update Car Rental Listing</button>
                             </div>
                         </form>
+
                     }
                 </div>
             </div>
