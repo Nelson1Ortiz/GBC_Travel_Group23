@@ -99,27 +99,53 @@ namespace GBC_Travel_Group23.Controllers
             return RedirectToAction("HotelRoomDetails", new {id = newRoom.Id});
         }
 
-
-        public async Task<IActionResult> FlightDetails(int id)
+        [HttpGet]
+        public IActionResult FlightDetails(int id, string mode)
         {
-            var flight = await _context.Flights
+            Flight? flight = _context.Flights
                 .Include(f => f.DepartureLocation)
                 .Include(f => f.ArrivalLocation)
-                .FirstOrDefaultAsync(f => f.Id == id);
+                .FirstOrDefault(f => f.Id == id);
 
             if (flight == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Flight = flight;
+            ViewBag.AvailableSeats = flight.TotalSeats - _context.Bookings.Count(b => b.ServiceId == flight.Id);
+            ViewBag.Mode = mode;
+            ViewBag.DepartureLocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = (location == Utils.GetLocationString(flight.DepartureLocation)) });
+            ViewBag.ArrivalLocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(flight.ArrivalLocation) });
             return View(flight);
         }
 
-        public async Task<IActionResult> CarRentalDetails(int id)
+        [HttpPost]
+        public IActionResult UpdateFlight(Flight flight)
         {
-            var carRental = await _context.CarRentals
+            var existingFlight = _context.Flights.Find(flight.Id)!;
+            existingFlight.Airline = flight.Airline;
+            existingFlight.Plane = flight.Plane;
+            existingFlight.FlightCode = flight.FlightCode;
+            existingFlight.DepartureLocation = flight.DepartureLocation;
+            existingFlight.ArrivalLocation = flight.ArrivalLocation;
+            existingFlight.DepartureDate = flight.DepartureDate;
+            existingFlight.ArrivalDate = flight.ArrivalDate;
+            existingFlight.TotalSeats = flight.TotalSeats;
+            existingFlight.Price = flight.Price;
+
+            _context.SaveChanges();
+
+
+            return RedirectToAction("FlightDetails", new { id = existingFlight.Id, mode = "view" });
+        }
+        [HttpGet]
+        public IActionResult CarRentalDetails(int id)
+        {
+            var carRental = _context.CarRentals
                 .Include(c => c.Location)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefault(c => c.Id == id);
 
             if (carRental == null)
             {
@@ -129,11 +155,12 @@ namespace GBC_Travel_Group23.Controllers
             return View(carRental);
         }
 
-        public async Task<IActionResult> HotelDetails(int id)
+        [HttpGet]
+        public IActionResult HotelDetails(int id)
         {
-            var hotel = await _context.Hotels
+            var hotel = _context.Hotels
                 .Include(h => h.Location)
-                .FirstOrDefaultAsync(h => h.Id == id);
+                .FirstOrDefault(h => h.Id == id);
 
             if (hotel == null)
             {
@@ -143,11 +170,12 @@ namespace GBC_Travel_Group23.Controllers
             return View(hotel);
         }
 
-        public async Task<IActionResult> HotelRoomDetails(int id)
+        [HttpGet]
+        public IActionResult HotelRoomDetails(int id)
         {
-            var hotelRoom = await _context.HotelRooms
+            var hotelRoom = _context.HotelRooms
                 .Include(hr => hr.Hotel)
-                .FirstOrDefaultAsync(hr => hr.Id == id);
+                .FirstOrDefault(hr => hr.Id == id);
 
             if (hotelRoom == null)
             {
