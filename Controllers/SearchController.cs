@@ -1,6 +1,7 @@
 ﻿using GBC_Travel_Group23.Data;
 using GBC_Travel_Group23.Models;
 using GBC_Travel_Group23.ViewModels;
+using GBC_Travel_Group23.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +18,7 @@ namespace GBC_Travel_Group23.Controllers
         [HttpPost]
         public IActionResult SearchListings(SearchViewModel model)
         {
-            var locations = _context.Locations;
-            List<string> locationsData = new List<string>();
-
-            foreach (var location in locations)
-            {
-                locationsData.Add($"{location.City}, {location.Country}");
-            }
-            ViewBag.LocationsData = locationsData;
+            ViewBag.LocationsData = Utils.getAllLocationsString(_context);
             SearchViewModel viewModel = new SearchViewModel();
 
             bool searchHotels = model.SearchHotels;
@@ -34,8 +28,8 @@ namespace GBC_Travel_Group23.Controllers
             string to = model.To;
             DateTime startDate = model.StartDate;
             DateTime endDate = model.EndDate;
-            Location departureLocation = getLocationFromString(from);
-            Location arrivalLocation = getLocationFromString(to);
+            Location departureLocation = Utils.getLocationFromString(from, _context);
+            Location arrivalLocation = Utils.getLocationFromString(to, _context);
             ViewBag.SearchFlights = searchFlights;
             ViewBag.SearchCars = searchCars;
             ViewBag.SearchHotels = searchHotels;
@@ -165,29 +159,6 @@ namespace GBC_Travel_Group23.Controllers
             }
             return View(viewModel);
 
-        }
-        //used to get the location data from the 'city, Country' string format
-        //because the dropdowns are populated with the location data it will never be null
-        public Location getLocationFromString(string location)
-        {
-            var parts = location.Split(", ");
-            return _context.Locations
-                .FirstOrDefault(l => l.City == parts[0] && l.Country == parts[1])!;
-        }
-        public IActionResult HotelDetails(int id)
-        {
-            var hotel = _context.Hotels
-                .Include(h => h.Location)
-                .Include(h => h.Rooms) 
-                .FirstOrDefault(h => h.Id == id);
-
-            if (hotel == null)
-            {
-                return NotFound();
-            }
-            return View(hotel);
-        }
-
-       
+        }       
     }
 }
