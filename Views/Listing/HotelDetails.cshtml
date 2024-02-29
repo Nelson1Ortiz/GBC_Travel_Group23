@@ -15,25 +15,56 @@
                     <h3>@Model.Name Details</h3>
                 </div>
                 <div class="card-body">
-                    <dl class="row">
-                        <dt class="col-sm-3">Name</dt>
-                        <dd class="col-sm-9">@Model.Name</dd>
+                    @if (mode != "edit")
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-3">Name</dt>
+                            <dd class="col-sm-9">@Model.Name</dd>
 
-                        <dt class="col-sm-3">Location</dt>
-                        <dd class="col-sm-9">@Model.Location.City, @Model.Location.Country</dd>
+                            <dt class="col-sm-3">Location</dt>
+                            <dd class="col-sm-9">@Model.Location.City, @Model.Location.Country</dd>
 
-                        <dt class="col-sm-3">Address</dt>
-                        <dd class="col-sm-9">@Model.Address</dd>
+                            <dt class="col-sm-3">Address</dt>
+                            <dd class="col-sm-9">@Model.Address</dd>
 
-                        <dt class="col-sm-3">Amenities</dt>
-                        <dd class="col-sm-9">@string.Join(", ", Model.Amenities)</dd>
-                    </dl>
-                    <div class="text-center">
-                        <!-- Assuming you want to allow booking the entire hotel, adjust the action and parameters as needed -->
-                        <a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "hotel", Id = Model.Id })" class="btn btn-success">Book</a>
-                        <a target="_blank" href="@Url.Action("EditHotel", "Listing", new { Id = Model.Id })" class="btn btn-primary">Edit</a>
-                        <a href="@Url.Action("DeleteHotel", "Listing", new { Id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
-                    </div>
+                            <dt class="col-sm-3">Amenities</dt>
+                            <dd class="col-sm-9">@string.Join(", ", Model.Amenities)</dd>
+                        </dl>
+                        <div class="text-center">
+                            <a href="@Url.Action("UpdateHotel", "Listing", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+                            <a href="@Url.Action("DeleteHotel", "Listing", new { id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="UpdateHotel" asp-controller="Listing" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Name</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Location.City" class="control-label">Location City</label>
+                                <input asp-for="Location.City" class="form-control" />
+                                <span asp-validation-for="Location.City" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label">Address</label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Amenities" class="control-label">Amenities</label>
+                                <input asp-for="Amenities" class="form-control" />
+                                <span asp-validation-for="Amenities" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Update Hotel</button>
+                            </div>
+                        </form>
+                    }
                 </div>
             </div>
         </div>

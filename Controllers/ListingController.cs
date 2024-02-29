@@ -198,8 +198,12 @@ namespace GBC_Travel_Group23.Controllers
                 return NotFound();
             }
 
+            ViewBag.LocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(carRental.Location) });
+
             return View(carRental);
         }
+
 
         [HttpGet]
         public IActionResult HotelDetails(int id)
@@ -213,14 +217,20 @@ namespace GBC_Travel_Group23.Controllers
                 return NotFound();
             }
 
+            
+            ViewBag.LocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(hotel.Location) });
+
             return View(hotel);
         }
+
 
         [HttpGet]
         public IActionResult HotelRoomDetails(int id)
         {
             var hotelRoom = _context.HotelRooms
                 .Include(hr => hr.Hotel)
+                    .ThenInclude(h => h.Location)
                 .FirstOrDefault(hr => hr.Id == id);
 
             if (hotelRoom == null)
@@ -228,17 +238,72 @@ namespace GBC_Travel_Group23.Controllers
                 return NotFound();
             }
 
+         
+            ViewBag.HotelLocation = Utils.GetLocationString(hotelRoom.Hotel.Location);
+
             return View(hotelRoom);
         }
 
-        [HttpPost, ActionName("Delete")]
+
+
+        [HttpPost, ActionName("DeleteFlight")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteFlightConfirmed(int id)
+        {
+            var flight = await _context.Flights.FindAsync(id);
+            if (flight != null)
+            {
+                // Assuming Flight has a dependency like Bookings, you'd handle it here.
+                // Example: _context.Bookings.Where(b => b.FlightId == id).ToList().ForEach(b => _context.Bookings.Remove(b));
+
+                _context.Flights.Remove(flight);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Flight)); // Redirect to the list of flights
+        }
+
+        [HttpPost, ActionName("DeleteCarRental")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCarRentalConfirmed(int id)
+        {
+            var carRental = await _context.CarRentals.FindAsync(id);
+            if (carRental != null)
+            {
+                _context.CarRentals.Remove(carRental);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(CarRental)); // Redirect to the list of car rentals
+        }
+
+        [HttpPost, ActionName("DeleteHotelRoom")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteHotelRoomConfirmed(int id)
+        {
+            var hotelRoom = await _context.HotelRooms.FindAsync(id);
+            if (hotelRoom != null)
+            {
+                // Additional logic here if there are dependencies to handle
+
+                _context.HotelRooms.Remove(hotelRoom);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(HotelRoom)); // Redirect to the list of hotel rooms
+        }
+
+
+
+
+        [HttpPost, ActionName("DeleteHotel")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteHotelConfirmed(int id)
         {
             var hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
             if (hotel != null)
             {
-                // If the hotel has rooms, delete them
+                // If the hotel has rooms, delete them first to avoid foreign key constraint issues
                 if (hotel.Rooms.Any())
                 {
                     _context.HotelRooms.RemoveRange(hotel.Rooms);
@@ -249,7 +314,9 @@ namespace GBC_Travel_Group23.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index)); // Redirect to the list of hotels
+            // Assuming "Index" is the action method that shows the list of hotels. 
+            // You might need to replace "Index" with the actual action method name if it's different.
+            return RedirectToAction("Index"); // Redirect to the list of hotels
         }
 
 
