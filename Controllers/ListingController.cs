@@ -159,7 +159,7 @@ namespace GBC_Travel_Group23.Controllers
         public IActionResult UpdateHotels(Hotel hotel)
         {
             var existingHotel = _context.Hotels.Find(hotel.Id);
-            existingHotel.Name = hotel.Name;
+            existingHotel!.Name = hotel.Name;
             existingHotel.Location = hotel.Location; 
             existingHotel.Address = hotel.Address;
             existingHotel.Amenities = hotel.Amenities;
@@ -174,7 +174,7 @@ namespace GBC_Travel_Group23.Controllers
         public IActionResult UpdateHotelRoom(HotelRoom hotelRoom)
         {
             var existingHotelRoom = _context.HotelRooms.Find(hotelRoom.Id);
-            existingHotelRoom.RoomName = hotelRoom.RoomName;
+            existingHotelRoom!.RoomName = hotelRoom.RoomName;
             existingHotelRoom.MaxOccupants = hotelRoom.MaxOccupants;
             existingHotelRoom.Amenities = hotelRoom.Amenities;
             existingHotelRoom.RoomCount = hotelRoom.RoomCount;

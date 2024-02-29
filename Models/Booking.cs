@@ -29,11 +29,11 @@ namespace GBC_Travel_Group23.Models
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
-        [NotMapped] public Flight? Flight { get; private set; }
+        [NotMapped] public Flight? Flight { get; set; }
 
-        [NotMapped] public HotelRoom? HotelRoom { get; private set; }
+        [NotMapped] public HotelRoom? HotelRoom { get; set; }
 
-        [NotMapped] public CarRental? CarRental { get; private set; }
+        [NotMapped] public CarRental? CarRental { get; set; }
 
 
         public void SetService(object service)

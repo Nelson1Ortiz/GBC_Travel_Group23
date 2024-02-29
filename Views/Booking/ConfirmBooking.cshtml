@@ -1,0 +1,133 @@
+﻿@model GBC_Travel_Group23.Models.Booking
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Booking Details";
+}
+
+<div class="container mt-4">
+    <h2>Booking Complete</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="alert alert-info">
+                <p>Client: <strong>@Model.Client.FullName</strong></p>
+                <p>Email: <strong>@Model.Client.Email</strong></p>
+                <p>Phone: <strong>@Model.Client.Phone</strong></p>
+                <p>Booking Type: <strong>@Model.Type</strong></p>
+                @if (Model.Type == "flight")
+                {
+                    <dl>
+                        <dt class="col-sm-3">Flight Code</dt>
+                        <dd class="col-sm-9">@Model.Flight!.FlightCode</dd>
+
+                        <dt class="col-sm-3">Airline</dt>
+                        <dd class="col-sm-9">@Model.Flight.Airline</dd>
+
+                        <dt class="col-sm-3">Departure</dt>
+                        <dd class="col-sm-9">@Model.Flight.DepartureLocation.City on @Model.Flight.DepartureDate.ToShortDateString()</dd>
+                    
+                        <dt class="col-sm-3">Departure Airport Code</dt>
+                        <dd class="col-sm-9">@Model.Flight.DepartureLocation.AirportCode</dd>
+                    
+                        <dt class="col-sm-3">Destination</dt>
+                        <dd class="col-sm-9">@Model.Flight.ArrivalLocation.City on @Model.Flight.ArrivalDate.ToShortDateString()</dd>
+                    
+                        <dt class="col-sm-3">Destination Airport</dt>
+                        <dd class="col-sm-9">@Model.Flight.ArrivalLocation.AirportCode</dd>
+
+                        <dt class="col-sm-3">Ticket Count</dt>
+                        <dd class="col-sm-9">@Model.GuestCount</dd>
+
+                        <dt class="col-sm-3">Total</dt>
+                        <dd class="col-sm-9">$@(Model.GuestCount * Model.Flight.Price) (Each ticket: $@Model.Flight.Price)</dd>
+                    </dl>
+                }
+                else if (Model.Type == "hotelroom")
+                {
+                    <dl>
+                        <dt class="col-sm-3">Hotel</dt>
+                        <dd class="col-sm-9">@Model.HotelRoom!.Hotel.Name</dd>
+
+                        <dt class="col-sm-3">Location</dt>
+                        <dd class="col-sm-9">@(Model.HotelRoom.Hotel.Location!.City), @Model.HotelRoom.Hotel.Location.Country</dd>
+
+                        <dt class="col-sm-3">Address</dt>
+                        <dd class="col-sm-9">@Model.HotelRoom.Hotel.Address</dd>
+
+                        <dt class="col-sm-3">Room Name</dt>
+                        <dd class="col-sm-9">@Model.HotelRoom.RoomName</dd>
+
+                        <dt class="col-sm-3">Amenities</dt>
+                        <dd class="col-sm-9">@Model.HotelRoom.Amenities ,@Model.HotelRoom.Hotel.Amenities<dd>
+
+                        <dt class="col-sm-3">Check-In Date</dt>
+                        <dd class="col-sm-9">@Model.StartDate<dd>
+
+                        <dt class="col-sm-3">Check-Out Date</dt>
+                        <dd class="col-sm-9">@Model.EndDate<dd>
+
+                        <dt class="col-sm-3">Guest Count</dt>
+                        <dd class="col-sm-9">@Model.GuestCount<dd>
+
+                        <dt class="col-sm-3">Total</dt>
+                        <dd class="col-sm-9">$@(ViewBag.Total) ($@Model.HotelRoom.Rate per night)</dd>
+                    </dl>
+                }
+                else if (Model.Type == "car")
+                {
+                    <dl>
+                        <dt class="col-sm-3">Location</dt>
+                        <dd class="col-sm-9">@(Model.CarRental!.Location!.City), @Model.CarRental.Location.Country</dd>
+
+                        <dt class="col-sm-3">Make</dt>
+                        <dd class="col-sm-9">@Model.CarRental.Make<dd>
+
+                        <dt class="col-sm-3"></dt>
+                        <dd class="col-sm-9">@Model.CarRental.Model<dd>
+
+                        <dt class="col-sm-3">Year</dt>
+                        <dd class="col-sm-9">@Model.CarRental.CarYear<dd>
+
+                        <dt class="col-sm-3">Capacity</dt>
+                        <dd class="col-sm-9">@Model.CarRental.Capacity<dd>
+
+                        <dt class="col-sm-3">Pickup Date</dt>
+                        <dd class="col-sm-9">@Model.StartDate<dd>
+
+                        <dt class="col-sm-3">Drop Off Date</dt>
+                        <dd class="col-sm-9">@Model.EndDate<dd>
+
+                        <dt class="col-sm-3">Total</dt>
+                        <dd class="col-sm-9">$@ViewBag.Total<dd>
+
+                        <dt class="col-sm-3">Guest Count</dt>
+                        <dd class="col-sm-9">@Model.GuestCount<dd>
+                        
+                    </dl>
+
+                }
+            </div>
+
+            <form asp-action="CompleteBooking" method="post">
+                @Html.HiddenFor(model => model.ClientId)
+                @Html.HiddenFor(model => model.Type)
+                @Html.HiddenFor(model => model.ServiceId)
+                @Html.HiddenFor(model => model.GuestCount)
+                @Html.HiddenFor(model => model.StartDate)
+                @Html.HiddenFor(model => model.EndDate)
+
+                <button type="submit" class="btn btn-success">Confirm Booking</button>
+                <button onclick="confirmCancel()" class="btn btn-danger">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmCancel() {
+        if (confirm("Are you sure you'd like to cancel? Progress will be lost!")) {
+            window.location.href = "@Url.Action("Index", "Home")";
+        }
+    }
+</script>

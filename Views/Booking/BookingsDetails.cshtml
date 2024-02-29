@@ -1,9 +1,38 @@
 ﻿@model IEnumerable<GBC_Travel_Group23.Models.Booking>
 
-<h2>Client Bookings</h2>
+<h2>Your Bookings</h2>
 
 @if (Model != null && Model.Any())
 {
+    <dl class="row">
+        <h3>Client Details</h3>
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9"></dd>
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9"></dd>
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9"></dd>
+
+
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">Booking ID</dt>
+        <dd class="col-sm-9"></dd>
+        <dt class="col-sm-3">Departure</dt>
+        <dd class="col-sm-9"></dd>
+        <dt class="col-sm-3">Departure Airport Code</dt>
+        <dd class="col-sm-9"> </dd>
+        <dt class="col-sm-3">Destination</dt>
+        <dd class="col-sm-9"> </dd>
+        <dt class="col-sm-3">Destination Airport</dt>
+        <dd class="col-sm-9"> </dd>
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9"> </dd>
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9"> </dd>
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9"> </dd>
+    </dl>
     <table class="table">
         <thead>
             <tr>
