@@ -109,7 +109,11 @@ namespace GBC_Travel_Group23.Controllers
             return View();
         }
 
-
+        public IActionResult BookedDetails()
+        {
+            return View();
+        }
+       
 
     }
 }
