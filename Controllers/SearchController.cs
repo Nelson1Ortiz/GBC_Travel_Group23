@@ -30,6 +30,8 @@ namespace GBC_Travel_Group23.Controllers
             DateTime endDate = model.EndDate;
             Location departureLocation = Utils.getLocationFromString(from, _context);
             Location arrivalLocation = Utils.getLocationFromString(to, _context);
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
             ViewBag.SearchFlights = searchFlights;
             ViewBag.SearchCars = searchCars;
             ViewBag.SearchHotels = searchHotels;

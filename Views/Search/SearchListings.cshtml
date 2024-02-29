@@ -103,8 +103,8 @@
                                 <td>@flight.DepartureDate</td>
                                 <td>@flight.TotalSeats</td>
                                 <td>@flight.AvailableSeats</td>
-                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "flight", Id = flight.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                <td><a target="_blank" href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
                                 <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
@@ -137,8 +137,8 @@
                                 <td>@flight.DepartureDate</td>
                                 <td>@flight.TotalSeats</td>
                                 <td>@flight.AvailableSeats</td>
-                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "flight", Id = flight.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                <td><a target="_blank" href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
                                 <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
@@ -174,8 +174,8 @@
                                 <td>@carRental.Capacity</td>
                                 <td>@carRental.AvailableCars</td>
                                 <td>$@carRental.Rate</td>
-                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "car", Id = carRental.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "car", Id = carRental.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                <td><a target="_blank" href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
                                 <td><a href="@Url.Action("DeleteCarRental", "Listing", new { Id = carRental.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
@@ -211,8 +211,8 @@
                                 <td>@hotelRoom.MaxOccupants</td>
                                 <td>@hotelRoom.AvailableRooms / @hotelRoom.RoomCount</td>
                                 <td>@hotelRoom.Rate</td>
-                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "hotelroom", Id = hotelRoom.Id })" class="btn btn-success">Book</a></td>
-                                <td><a href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "hotelroom", Id = hotelRoom.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                <td><a target="_blank" href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
                                 <td><a href="@Url.Action("DeleteHotelRoom", "Listing", new { Id = hotelRoom.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
