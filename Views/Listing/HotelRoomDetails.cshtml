@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Hotel Room Details";
-    string? mode = ViewBag.Mode; // Assuming you have a similar mechanism for Hotel Rooms
+    string? mode = ViewBag.Mode;
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -14,27 +14,56 @@
                 <div class="card-header bg-dark text-white">
                     @if (mode == "edit")
                     {
-                        <span>Edit Hotel Room</span>
+                        <h3>Edit Hotel Room - @Model.RoomName</h3>
                     }
                     else
                     {
-                        <span>Hotel Room Details</span>
+                        <h3>Hotel Room Details - @Model.RoomName</h3>
                     }
                 </div>
                 <div class="card-body">
                     @if (mode != "edit")
                     {
-                        <!-- Display Hotel Room Details -->
+                        
                         <dl class="row">
-                            <!-- Fix: Display fields for Hotel Room -->
+                            <dt class="col-sm-3">Room Name</dt>
+                            <dd class="col-sm-9">@Model.RoomName</dd>
+
+                            <dt class="col-sm-3">Hotel</dt>
+                            <dd class="col-sm-9">@Model.Hotel.Name</dd>
+
+                            <dt class="col-sm-3">Max Occupants</dt>
+                            <dd class="col-sm-9">@Model.MaxOccupants</dd>
+
+                            <dt class="col-sm-3">Amenities</dt>
+                            <dd class="col-sm-9">@string.Join(", ", Model.Amenities)</dd>
+
+                            <dt class="col-sm-3">Room Count</dt>
+                            <dd class="col-sm-9">@Model.RoomCount</dd>
+
+                            <dt class="col-sm-3">Rate (per night)</dt>
+                            <dd class="col-sm-9">$@Model.Rate.ToString("0.00")</dd>
                         </dl>
                         <div class="text-center">
-                            <!-- Fix: Add/Edit/Delete buttons -->
+                            <a href="@Url.Action("EditHotelRoom", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+                            <a href="@Url.Action("DeleteHotelRoom", new { id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel room?');">Delete</a>
                         </div>
                     }
                     else
                     {
-                        <!-- Fix: Edit form fields for Hotel Room -->
+                        
+                        <form asp-action="UpdateHotelRoom" method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="RoomName" class="control-label">Room Name</label>
+                                <input asp-for="RoomName" class="form-control" />
+                                <span asp-validation-for="RoomName" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Update Hotel Room</button>
+                            </div>
+                        </form>
                     }
                 </div>
             </div>
