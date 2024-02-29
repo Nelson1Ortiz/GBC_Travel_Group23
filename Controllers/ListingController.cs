@@ -252,6 +252,66 @@ namespace GBC_Travel_Group23.Controllers
             return RedirectToAction(nameof(Index)); // Redirect to the list of hotels
         }
 
+        [HttpPost, ActionName("DeleteFlight")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteFlightConfirmed(int id)
+        {
+            var flight = await _context.Flights.FirstOrDefaultAsync(f => f.Id == id);
+            if (flight != null)
+            {
+                // Check if there are any bookings associated with this flight
+                var bookings = await _context.Bookings.Where(b => b.Id == id).ToListAsync();
+
+                // If there are bookings, delete them
+                if (bookings.Any())
+                {
+                    _context.Bookings.RemoveRange(bookings);
+                }
+
+                // Now delete the flight
+                _context.Flights.Remove(flight);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index)); // Adjust as needed to redirect to the appropriate view
+        }
+
+        [HttpPost, ActionName("DeleteCarRental")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCarRentalConfirmed(int id)
+        {
+            var carRental = await _context.CarRentals.FindAsync(id);
+            if (carRental != null)
+            {
+                _context.CarRentals.Remove(carRental);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index)); // Adjust as needed
+        }
+
+        [HttpPost, ActionName("DeleteHotel")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteHotelConfirmed(int id)
+        {
+            var hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
+            if (hotel != null)
+            {
+                // If the hotel has rooms, delete them first
+                if (hotel.Rooms.Any())
+                {
+                    _context.HotelRooms.RemoveRange(hotel.Rooms);
+                }
+
+                // Now delete the hotel
+                _context.Hotels.Remove(hotel);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index)); // Adjust as needed
+        }
+
+
 
 
 
