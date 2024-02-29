@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using GBC_Travel_Group23.Data;
 using GBC_Travel_Group23.ViewModels;
+using GBC_Travel_Group23.Helpers;
 
 namespace GBC_Travel_Group23.Controllers
 {
@@ -18,7 +19,7 @@ namespace GBC_Travel_Group23.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.LocationsData = getAllLocationsString();
+            ViewBag.LocationsData = Utils.getAllLocationsString(_context);
             SearchViewModel viewModel = new SearchViewModel();
             return View(viewModel);
         }
@@ -26,22 +27,6 @@ namespace GBC_Travel_Group23.Controllers
         {
             return View();
         }
-
-        public List<string> getAllLocationsString()
-        {
-            var locations = _context.Locations;
-            List<string> locationsData = new List<string>();
-
-            foreach (var location in locations)
-            {
-                locationsData.Add($"{location.City}, {location.Country}");
-            }
-            return locationsData;
-        }
-        
-        
-
-
 
 
         public IActionResult NotFound(int statusCode)

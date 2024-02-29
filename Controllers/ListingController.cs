@@ -99,6 +99,11 @@ namespace GBC_Travel_Group23.Controllers
             return RedirectToAction("HotelRoomDetails", new {id = newRoom.Id});
         }
 
+        [HttpGet]
+        public IActionResult FlightDetails(int id)
+        {
+            return View();
+        }
 
 
 
