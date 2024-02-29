@@ -1,0 +1,198 @@
+﻿@model GBC_Travel_Group23.ViewModels.AddListingViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Listings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="add-Flights-tab" data-toggle="tab" href="#flights" role="tab">Add Flights</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="add-carRentals-tab" data-toggle="tab" href="#carRentals" role="tab">Add Car Rentals</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="add-hotels-tab" data-toggle="tab" href="#hotels" role="tab">Add Hotels</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="add-hotelRooms-tab" data-toggle="tab" href="#hotelRooms" role="tab">Add Hotel Rooms</a>
+        </li>
+</ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="flights" role="tabpanel">
+            <form asp-controller="Listing" asp-action="AddFlight" method="post" onsubmit="validteFlight()">
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Flight.Airline" class="control-label"></label>
+                    <input asp-for="Flight.Airline" class="form-control" placeholder="e.g: American Airlines" />
+                    <span asp-validation-for="Flight.Airline" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Flight.Plane" class="control-label"></label>
+                    <input asp-for="Flight.Plane" class="form-control" placeholder="e.g: Boeing 747"  />
+                    <span asp-validation-for="Flight.Plane" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Flight.FlightCode" class="control-label"></label>
+                    <input asp-for="Flight.FlightCode" class="form-control" placeholder="e.g: AA102" />
+                    <span asp-validation-for="Flight.FlightCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FromLocation">Departure Location</label>
+                    <select asp-for="FromLocation" class="form-control" asp-items="@ViewBag.LocationsData"></select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ToLocation">Arrival Location</label>
+                    <select asp-for="ToLocation" class="form-control" asp-items="@ViewBag.LocationsData"></select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Flight.DepartureDate" class="control-label"></label>
+                    <input asp-for="Flight.DepartureDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" />
+                    <span asp-validation-for="Flight.DepartureDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Flight.ArrivalDate" class="control-label"></label>
+                    <input asp-for="Flight.ArrivalDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" />
+                    <span asp-validation-for="Flight.ArrivalDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Flight.TotalSeats" class="control-label"></label>
+                    <input asp-for="Flight.TotalSeats" type="number" min="1" class="form-control" />
+                    <span asp-validation-for="Flight.TotalSeats" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Flight.Price" class="control-label"></label>
+                    <input asp-for="Flight.Price" type="number" step="0.01" min="0" placeholder="0.00" class="form-control" />
+                    <span asp-validation-for="Flight.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Add Flight Listing</button>
+                </div>
+            </form>
+        </div>       
+        <div class="tab-pane fade" id="carRentals" role="tabpanel">
+            <form asp-controller="Listing" asp-action="AddCarRental" method="post">
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ToLocation" class="control-label">Location</label>
+                    <select asp-for="ToLocation" class="form-control" asp-items="@ViewBag.LocationsData"></select>
+                    <span asp-validation-for="ToLocation" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarRental.Make" class="control-label">Car Make</label>
+                    <input asp-for="CarRental.Make" class="form-control" placeholder="e.g: Hyundai" />
+                    <span asp-validation-for="CarRental.Make" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarRental.Model" class="control-label">Car Model</label>
+                    <input asp-for="CarRental.Model" class="form-control" placeholder="e.g: Elantra" />
+                    <span asp-validation-for="CarRental.Model" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarRental.CarYear" class="control-label">Car Year</label>
+                    <input asp-for="CarRental.CarYear" type="number" min="1900" max="@DateTime.Now.Year" value="2010" class="form-control" />
+                    <span asp-validation-for="CarRental.CarYear" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarRental.Capacity" class="control-label">Capacity (seats)</label>
+                    <input asp-for="CarRental.Capacity" type="number" min="1" class="form-control" />
+                    <span asp-validation-for="CarRental.Capacity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarRental.Count" class="control-label">Count (amount of cars)</label>
+                    <input asp-for="CarRental.Count" type="number" min="0" class="form-control" />
+                    <span asp-validation-for="CarRental.Count" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarRental.Rate" class="control-label">Rate</label>
+                    <input asp-for="CarRental.Rate" type="number" min="0" placeholder="0.00" class="form-control" />
+                    <span asp-validation-for="CarRental.Rate"  class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" value="Create" class="btn btn-primary">Add Car Rental</button>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="hotels" role="tabpanel">
+            <form asp-controller="Listing" asp-action="AddHotel" method="post">
+                <div class="text-danger"></div>
+
+                <div class="form-group">
+                    <label class="control-label">Hotel Name</label>
+                    <input asp-for="Hotel.Name" class="form-control" placeholder="e.g: Marriott" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Location</label>
+                    <select asp-for="ToLocation" class="form-control" asp-items="@ViewBag.LocationsData"></select>
+                    <span asp-validation-for="ToLocation" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Hotel.Address" class="control-label">Address</label>
+                    <input asp-for="Hotel.Address" class="form-control" placeholder="e.g: 123 Streetname rd" />
+                    <span asp-validation-for="Hotel.Address" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Hotel.Amenities" class="control-label">Amenities</label>
+                    <input asp-for="Hotel.Amenities" class="form-control" placeholder="e.g: Free Wifi, Pool" />
+                    <span asp-validation-for="Hotel.Amenities" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="hotelRooms" role="tabpanel">
+            <form asp-controller="Listing" asp-action="AddHotelRoom" method="post">
+                <div class="form-group">
+                    <label class="control-label">Hotel Name</label>
+                    <select asp-for="HotelName" class="form-control" asp-items="@ViewBag.Hotels"></select>
+                    <span asp-validation-for="HotelName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HotelRoom.RoomName"  class="control-label"></label>
+                    <input asp-for="HotelRoom.RoomName" placeholder="e.g: 1 King, 1 Single"  class="form-control" />
+                    <span asp-validation-for="HotelRoom.RoomName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HotelRoom.MaxOccupants" class="control-label"></label>
+                    <input asp-for="HotelRoom.MaxOccupants" type="number" min="1" value="1" class="form-control" />
+                    <span asp-validation-for="HotelRoom.MaxOccupants" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HotelRoom.Amenities" class="control-label"></label>
+                    <input asp-for="HotelRoom.Amenities" placeholder="e.g: Ensuite Bathroom, Great View" class="form-control" />
+                    <span asp-validation-for="HotelRoom.Amenities" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HotelRoom.RoomCount" class="control-label"></label>
+                    <input asp-for="HotelRoom.RoomCount" type="number" min="0" value="1" class="form-control" />
+                    <span asp-validation-for="HotelRoom.RoomCount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HotelRoom.Rate" class="control-label"></label>
+                    <input asp-for="HotelRoom.Rate" type="number" min="0" placeholder="0.00" class="form-control" />
+                    <span asp-validation-for="HotelRoom.Rate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

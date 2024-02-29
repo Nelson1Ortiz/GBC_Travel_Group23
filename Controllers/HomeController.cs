@@ -18,14 +18,7 @@ namespace GBC_Travel_Group23.Controllers
         }
         public IActionResult Index()
         {
-            var locations = _context.Locations;
-            List<string> locationsData = new List<string>();
-
-            foreach (var location in locations)
-            {
-                locationsData.Add($"{location.City}, {location.Country}");
-            }
-            ViewBag.LocationsData = locationsData;
+            ViewBag.LocationsData = getAllLocationsString();
             SearchViewModel viewModel = new SearchViewModel();
             return View(viewModel);
         }
@@ -33,7 +26,19 @@ namespace GBC_Travel_Group23.Controllers
         {
             return View();
         }
-        public IActionResult oldIndex() { return View(); }
+
+        public List<string> getAllLocationsString()
+        {
+            var locations = _context.Locations;
+            List<string> locationsData = new List<string>();
+
+            foreach (var location in locations)
+            {
+                locationsData.Add($"{location.City}, {location.Country}");
+            }
+            return locationsData;
+        }
+        
         
 
 
