@@ -85,5 +85,31 @@ namespace GBC_Travel_Group23.Controllers
         {
             return _context.Bookings.Any(e => e.Id == id);
         }
+
+        [HttpGet]
+        public IActionResult MakeBookingClient()
+        {
+            return View(new Booking());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MakeBookingClient(Booking booking)
+        {
+            if (ModelState.IsValid)
+            {
+                // Since you're not saving the details, just pass them to the confirmation view
+                return RedirectToAction("BookingConfirmation", booking);
+            }
+            return View(booking);
+        }
+
+        public IActionResult BookingConfirmation()
+        {
+            return View();
+        }
+
+
+
     }
 }
