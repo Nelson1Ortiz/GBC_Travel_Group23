@@ -17,55 +17,6 @@ namespace GBC_Travel_Group23.Controllers
             _context = context;
         }
 
-        // GET: Show booking confirmation form
-        public async Task<IActionResult> ConfirmBooking(int? id, string type) // id for service, type for service type
-        {
-            if (id == null || string.IsNullOrEmpty(type))
-            {
-                return NotFound();
-            }
-
-            Booking booking = new();
-
-            switch (type.ToLower())
-            {
-                case "flight":
-                    var flight = await _context.Flights.FirstOrDefaultAsync(f => f.Id == id);
-                    if (flight != null)
-                    {
-                        booking.ServiceId = flight.Id;
-                        booking.Type = "Flight";
-                    }
-                    break;
-                case "carrental":
-                    var carRental = await _context.CarRentals.FirstOrDefaultAsync(c => c.Id == id);
-                    if (carRental != null)
-                    {
-                        booking.ServiceId = carRental.Id;
-                        booking.Type = "CarRental";
-                    }
-                    break;
-                case "hotel":
-                    var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id);
-                    if (hotel != null)
-                    {
-                        booking.ServiceId = hotel.Id;
-                        booking.Type = "Hotel";
-                    }
-                    break;
-                default:
-                    return NotFound();
-            }
-
-            if (booking.ServiceId <= 0)
-            {
-                return NotFound();
-            }
-
-            return View(booking);
-        }
-
-        // POST: Process booking confirmation
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmBooking(Booking booking)
@@ -79,34 +30,30 @@ namespace GBC_Travel_Group23.Controllers
             return View(booking);
         }
 
-        // Other controller methods...
-
-        private bool BookingExists(int id)
-        {
-            return _context.Bookings.Any(e => e.Id == id);
-        }
-
         [HttpGet]
-        public IActionResult MakeBookingClient()
+        public IActionResult CreateBooking(string type, int id, DateTime startDate, DateTime endDate)
         {
-            return View(new Booking());
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult MakeBookingClient(Booking booking)
-        {
-            if (ModelState.IsValid)
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+            ViewBag.Type = type;
+            if (type == "flight")
             {
-                // Since you're not saving the details, just pass them to the confirmation view
-                return RedirectToAction("BookingConfirmation", booking);
+                Flight flight = _context.Flights
+                    .Include(f => f.DepartureLocation)
+                    .Include(f => f.ArrivalLocation)
+                    .FirstOrDefault(f => f.Id == id)!;
+                ViewBag.Service = flight; 
+                ViewBag.AvailableSeats = flight.TotalSeats - _context.Bookings.Count(b => b.ServiceId == flight.Id);
+            } else if (type == "car")
+            {
+                CarRental carRental = _context.CarRentals.FirstOrDefault(c => c.Id == id)!;
+                ViewBag.Service = carRental;
+            } else
+            {
+                HotelRoom hotelRoom = _context.HotelRooms.FirstOrDefault(hr => hr.Id == id)!;
+                ViewBag.Service = hotelRoom;
             }
-            return View(booking);
-        }
-
-        public IActionResult BookingConfirmation()
-        {
-            return View();
+            return View(new Booking());
         }
 
         public IActionResult BookedDetails()

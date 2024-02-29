@@ -134,9 +134,7 @@ namespace GBC_Travel_Group23.Controllers
             existingFlight.ArrivalDate = flight.ArrivalDate;
             existingFlight.TotalSeats = flight.TotalSeats;
             existingFlight.Price = flight.Price;
-
             _context.SaveChanges();
-
 
             return RedirectToAction("FlightDetails", new { id = existingFlight.Id, mode = "view" });
         }
@@ -191,7 +189,7 @@ namespace GBC_Travel_Group23.Controllers
         [HttpGet]
         public IActionResult CarRentalDetails(int id)
         {
-            var carRental = _context.CarRentals
+            CarRental? carRental = _context.CarRentals
                 .Include(c => c.Location)
                 .FirstOrDefault(c => c.Id == id);
 
