@@ -140,6 +140,54 @@ namespace GBC_Travel_Group23.Controllers
 
             return RedirectToAction("FlightDetails", new { id = existingFlight.Id, mode = "view" });
         }
+        [HttpPost]
+        public IActionResult UpdateCarRental(CarRental carRental)
+        {
+            var existingCarRental = _context.CarRentals.Find(carRental.Id)!;
+            existingCarRental.Make = carRental.Make;
+            existingCarRental.Model = carRental.Model;
+            existingCarRental.CarYear = carRental.CarYear;
+            existingCarRental.Capacity = carRental.Capacity;
+            existingCarRental.Count = carRental.Count;
+            existingCarRental.Rate = carRental.Rate;
+            existingCarRental.Location = carRental.Location;
+
+            _context.SaveChanges();
+
+
+            return RedirectToAction("CarRentalDetails", new { id = existingCarRental.Id, mode = "view" });
+        }
+        [HttpPost]
+        public IActionResult UpdateHotels(Hotel hotel)
+        {
+            var existingHotel = _context.Hotels.Find(hotel.Id);
+            existingHotel.Name = hotel.Name;
+            existingHotel.Location = hotel.Location; 
+            existingHotel.Address = hotel.Address;
+            existingHotel.Amenities = hotel.Amenities;
+
+            _context.SaveChanges();
+
+
+            return RedirectToAction("HotelDetails", new { id = existingHotel.Id, mode = "view" });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateHotelRoom(HotelRoom hotelRoom)
+        {
+            var existingHotelRoom = _context.HotelRooms.Find(hotelRoom.Id);
+            existingHotelRoom.RoomName = hotelRoom.RoomName;
+            existingHotelRoom.MaxOccupants = hotelRoom.MaxOccupants;
+            existingHotelRoom.Amenities = hotelRoom.Amenities;
+            existingHotelRoom.RoomCount = hotelRoom.RoomCount;
+            existingHotelRoom.Rate = hotelRoom.Rate;
+
+            _context.SaveChanges();
+
+
+            return RedirectToAction("HotelDetails", new { id = existingHotelRoom.Id, mode = "view" });
+        }
+
         [HttpGet]
         public IActionResult CarRentalDetails(int id)
         {
