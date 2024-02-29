@@ -24,7 +24,7 @@
                 <div class="card-body">
                     @if (mode != "edit")
                     {
-                        <!-- Display Hotel Room Details -->
+                        
                         <dl class="row">
                             <dt class="col-sm-3">Room Name</dt>
                             <dd class="col-sm-9">@Model.RoomName</dd>
@@ -51,7 +51,7 @@
                     }
                     else
                     {
-                        <!-- Edit form fields for Hotel Room -->
+                        
                         <form asp-action="UpdateHotelRoom" method="post">
                             <input type="hidden" asp-for="Id" />
                             <div class="form-group">
@@ -59,7 +59,7 @@
                                 <input asp-for="RoomName" class="form-control" />
                                 <span asp-validation-for="RoomName" class="text-danger"></span>
                             </div>
-                            <!-- Add more fields as required for editing -->
+                            
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Update Hotel Room</button>
                             </div>

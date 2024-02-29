@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Hotel Details";
-    string? mode = ViewBag.Mode; // Assuming you have a similar mechanism for Hotels
+    string? mode = ViewBag.Mode; // Adjust based on your actual mode determination logic
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -14,17 +14,17 @@
                 <div class="card-header bg-dark text-white">
                     @if (mode == "edit")
                     {
-                        <span>Edit Hotel</span>
+                        <h3>Edit Hotel - @Model.Name</h3>
                     }
                     else
                     {
-                        <span>Hotel Details</span>
+                        <h3>Hotel Details - @Model.Name</h3>
                     }
                 </div>
                 <div class="card-body">
                     @if (mode != "edit")
                     {
-                        <!-- Display Hotel Details -->
+                        
                         <dl class="row">
                             <dt class="col-sm-3">Name</dt>
                             <dd class="col-sm-9">@Model.Name</dd>
@@ -38,16 +38,40 @@
                             <dt class="col-sm-3">Amenities</dt>
                             <dd class="col-sm-9">@string.Join(", ", Model.Amenities)</dd>
                         </dl>
-
                         <div class="text-center">
-                            <a href="@Url.Action("EditHotel", new { id = Model.Id })" class="btn btn-primary">Edit</a>
-                            <!-- Fix: Update the Delete link -->
-                            <a href="@Url.Action("DeleteHotel", new { id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                            <a href="@Url.Action("EditHotel", "YourControllerName", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+                            <a href="@Url.Action("DeleteHotel", "YourControllerName", new { id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
                         </div>
                     }
                     else
                     {
-                        <!-- Fix: Edit form fields for Hotel -->
+                        
+                        <form asp-action="UpdateHotel" method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label">Name</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Location.City" class="control-label">Location City</label>
+                                <input asp-for="Location.City" class="form-control" />
+                                <span asp-validation-for="Location.City" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label">Address</label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Amenities" class="control-label">Amenities</label>
+                                <input asp-for="Amenities" class="form-control" />
+                                <span asp-validation-for="Amenities" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Update Hotel</button>
+                            </div>
+                        </form>
                     }
                 </div>
             </div>
