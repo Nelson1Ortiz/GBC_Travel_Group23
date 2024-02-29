@@ -99,6 +99,112 @@ namespace GBC_Travel_Group23.Controllers
             return RedirectToAction("HotelRoomDetails", new {id = newRoom.Id});
         }
 
+        [HttpGet]
+        public IActionResult FlightDetails(int id, string mode)
+        {
+            Flight? flight = _context.Flights
+                .Include(f => f.DepartureLocation)
+                .Include(f => f.ArrivalLocation)
+                .FirstOrDefault(f => f.Id == id);
+
+            if (flight == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Flight = flight;
+            ViewBag.AvailableSeats = flight.TotalSeats - _context.Bookings.Count(b => b.ServiceId == flight.Id);
+            ViewBag.Mode = mode;
+            ViewBag.DepartureLocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = (location == Utils.GetLocationString(flight.DepartureLocation)) });
+            ViewBag.ArrivalLocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(flight.ArrivalLocation) });
+            return View(flight);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateFlight(Flight flight)
+        {
+            var existingFlight = _context.Flights.Find(flight.Id)!;
+            existingFlight.Airline = flight.Airline;
+            existingFlight.Plane = flight.Plane;
+            existingFlight.FlightCode = flight.FlightCode;
+            existingFlight.DepartureLocation = flight.DepartureLocation;
+            existingFlight.ArrivalLocation = flight.ArrivalLocation;
+            existingFlight.DepartureDate = flight.DepartureDate;
+            existingFlight.ArrivalDate = flight.ArrivalDate;
+            existingFlight.TotalSeats = flight.TotalSeats;
+            existingFlight.Price = flight.Price;
+
+            _context.SaveChanges();
+
+
+            return RedirectToAction("FlightDetails", new { id = existingFlight.Id, mode = "view" });
+        }
+        [HttpGet]
+        public IActionResult CarRentalDetails(int id)
+        {
+            var carRental = _context.CarRentals
+                .Include(c => c.Location)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+
+            return View(carRental);
+        }
+
+        [HttpGet]
+        public IActionResult HotelDetails(int id)
+        {
+            var hotel = _context.Hotels
+                .Include(h => h.Location)
+                .FirstOrDefault(h => h.Id == id);
+
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            return View(hotel);
+        }
+
+        [HttpGet]
+        public IActionResult HotelRoomDetails(int id)
+        {
+            var hotelRoom = _context.HotelRooms
+                .Include(hr => hr.Hotel)
+                .FirstOrDefault(hr => hr.Id == id);
+
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
+
+            return View(hotelRoom);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
+            if (hotel != null)
+            {
+                // If the hotel has rooms, delete them
+                if (hotel.Rooms.Any())
+                {
+                    _context.HotelRooms.RemoveRange(hotel.Rooms);
+                }
+
+                // Now delete the hotel
+                _context.Hotels.Remove(hotel);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index)); // Redirect to the list of hotels
+        }
 
 
 

@@ -7,7 +7,7 @@
 <form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
     <div class="form-row">
         <div class="col-md-6 mb-3 d-flex flex-column align-items-center mx-auto">
-            <label for="searchOptions">I am looking for:</label>
+            <label for="searchOptions">I am looking for: (Hold ctrl/cmd to select multiple)</label>
             <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
                 <option value="Hotels">Hotels</option>
                 <option value="CarRentals">Car Rentals</option>

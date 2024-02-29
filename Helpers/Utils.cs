@@ -29,6 +29,11 @@ namespace GBC_Travel_Group23.Helpers
         {
             return _context.Hotels.FirstOrDefault(h => h.Name == name)!;
         }
+
+        public static string GetLocationString(Location location)
+        {
+            return $"{location.City}, {location.Country}";
+        }
     }
 
 }

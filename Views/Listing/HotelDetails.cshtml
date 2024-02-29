@@ -1,23 +1,36 @@
 ﻿@model IEnumerable<GBC_Travel_Group23.Models.Hotel>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Hotel Name</th>
-            <th>Location</th>
-            <th>Rating</th>
-            <th>Amenities</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var hotel in Model)
-        {
-            <tr>
-                <td>@hotel.Name</td>
-                <td>@hotel.Location</td>
-                <td>@hotel.Address</td>
-                <td>@string.Join(", ", hotel.Amenities)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2>Hotel Listings</h2>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <table class="table table-responsive table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Hotel Name</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Amenities</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var hotel in Model)
+                    {
+                        <tr>
+                            <td>@hotel.Name</td>
+                            <td>@hotel.Location.City</td>
+                            <td>@hotel.Address</td>
+                            <td>@string.Join(", ", hotel.Amenities)</td>
+                            <td>
+                                <a href="/Hotels/Edit/@hotel.Id" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="/Hotels/Delete/@hotel.Id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,7 @@
     <form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
         <div class="form-row">
             <div class="col-md-6 mb-3 d-flex flex-column align-items-center mx-auto">
-                <label for="searchOptions">I am looking for:</label>
+                <label for="searchOptions">I am looking for: (Hold ctrl/cmd to select multiple)</label>
                 <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
                     <option value="Hotels">Hotels</option>
                     <option value="CarRentals">Car Rentals</option>
@@ -87,6 +87,9 @@
                             <th>Departure Date</th>
                             <th>Total Seats</th>
                             <th>Available Seats</th>
+                            <th>Book Now</th>
+                            <th>Edit Listing</th>
+                            <th>Delete Listing</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,6 +103,9 @@
                                 <td>@flight.DepartureDate</td>
                                 <td>@flight.TotalSeats</td>
                                 <td>@flight.AvailableSeats</td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
@@ -115,6 +121,9 @@
                             <th>Departure Date</th>
                             <th>Total Seats</th>
                             <th>Available Seats</th>
+                            <th>Book Now</th>
+                            <th>Edit Listing</th>
+                            <th>Delete Listing</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,6 +137,9 @@
                                 <td>@flight.DepartureDate</td>
                                 <td>@flight.TotalSeats</td>
                                 <td>@flight.AvailableSeats</td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "flight", Id = flight.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
@@ -147,6 +159,9 @@
                             <th>Capacity</th>
                             <th>Cars Available</th>
                             <th>Rate</th>
+                            <th>Book Now</th>
+                            <th>Edit Listing</th>
+                            <th>Delete Listing</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -159,6 +174,9 @@
                                 <td>@carRental.Capacity</td>
                                 <td>@carRental.AvailableCars</td>
                                 <td>$@carRental.Rate</td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "car", Id = carRental.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteCarRental", "Listing", new { Id = carRental.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
@@ -178,6 +196,9 @@
                             <th>Max Occupants</th>
                             <th>Available Rooms</th>
                             <th>Rate</th>
+                            <th>Book Now</th>
+                            <th>Edit Listing</th>
+                            <th>Delete Listing</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -190,6 +211,9 @@
                                 <td>@hotelRoom.MaxOccupants</td>
                                 <td>@hotelRoom.AvailableRooms / @hotelRoom.RoomCount</td>
                                 <td>@hotelRoom.Rate</td>
+                                <td><a href="@Url.Action("MakeBooking", "Booking", new { type = "hotelroom", Id = hotelRoom.Id })" class="btn btn-success">Book</a></td>
+                                <td><a href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                <td><a href="@Url.Action("DeleteHotelRoom", "Listing", new { Id = hotelRoom.Id })" class="btn btn-danger">Delete</a></td>
                             </tr>
                         }
                     </tbody>
