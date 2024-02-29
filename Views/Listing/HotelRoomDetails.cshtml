@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Hotel Room Details";
-    string? mode = ViewBag.Mode;
+    string? mode = ViewBag.Mode; // Adapt based on your actual mode determination logic
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -12,19 +12,11 @@
         <div class="col">
             <div class="card">
                 <div class="card-header bg-dark text-white">
-                    @if (mode == "edit")
-                    {
-                        <h3>Edit Hotel Room - @Model.RoomName</h3>
-                    }
-                    else
-                    {
-                        <h3>Hotel Room Details - @Model.RoomName</h3>
-                    }
+                    <h3>@Model.Hotel.Name - @Model.RoomName</h3>
                 </div>
                 <div class="card-body">
                     @if (mode != "edit")
                     {
-                        
                         <dl class="row">
                             <dt class="col-sm-3">Hotel Name</dt>
                             <dd class="col-sm-9">@Model.Hotel.Name</dd>
@@ -48,21 +40,40 @@
                             <dd class="col-sm-9">$@Model.Rate.ToString("0.00")</dd>
                         </dl>
                         <div class="text-center">
-                            <a href="@Url.Action("EditHotelRoom", new { id = Model.Id })" class="btn btn-primary">Edit</a>
-                            <a href="@Url.Action("DeleteHotelRoom", new { id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel room?');">Delete</a>
+                            <a href="@Url.Action("UpdateHotelRoom", "Listing", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+                            <a href="@Url.Action("DeleteHotelRoom", "Listing", new { id = Model.Id })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel room?');">Delete</a>
                         </div>
                     }
                     else
                     {
-                        
-                        <form asp-action="UpdateHotelRoom" method="post">
+                        <form asp-action="UpdateHotelRoom" asp-controller="Listing" method="post">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" asp-for="Id" />
                             <div class="form-group">
                                 <label asp-for="RoomName" class="control-label">Room Name</label>
                                 <input asp-for="RoomName" class="form-control" />
                                 <span asp-validation-for="RoomName" class="text-danger"></span>
                             </div>
-                            
+                            <div class="form-group">
+                                <label asp-for="MaxOccupants" class="control-label">Max Occupants</label>
+                                <input asp-for="MaxOccupants" class="form-control" />
+                                <span asp-validation-for="MaxOccupants" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Amenities" class="control-label">Amenities</label>
+                                <input asp-for="Amenities" class="form-control" />
+                                <span asp-validation-for="Amenities" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="RoomCount" class="control-label">Room Count</label>
+                                <input asp-for="RoomCount" class="form-control" />
+                                <span asp-validation-for="RoomCount" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Rate" class="control-label">Rate (per night)</label>
+                                <input asp-for="Rate" class="form-control" />
+                                <span asp-validation-for="Rate" class="text-danger"></span>
+                            </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Update Hotel Room</button>
                             </div>
