@@ -116,9 +116,9 @@
                     } else
                     {
                         <label asp-for="StartDate" class="control-label">@startDateLabel</label>
-                        <input required type="date" asp-for="StartDate" value="@ViewBag.StartDate" />
+                        <input required type="date" class="form-control" asp-for="StartDate" value="@ViewBag.StartDate.ToString()" />
                         <label asp-for="StartDate" class="control-label">@endDateLabel</label>
-                        <input required type="date" asp-for="EndDate" value="@ViewBag.EndDate" />
+                        <input required type="date" class="form-control" asp-for="EndDate" value="@ViewBag.EndDate.ToString()" />
                     }
             
                     <div class="form-group">

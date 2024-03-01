@@ -87,7 +87,7 @@ namespace GBC_Travel_Group23.Controllers
                     _context.Clients.Add(booking.Client);
                 }
 
-                _context.Add(booking);
+                _context.Bookings.Add(booking);
                 _context.SaveChanges();
             return RedirectToAction("BookingsDetails", "Booking", new { clientEmail = booking.Client.Email});
         }

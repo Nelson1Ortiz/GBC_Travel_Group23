@@ -56,7 +56,7 @@ namespace GBC_Travel_Group23.Controllers
                                         b.StartDate == startDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(r => r.Flight.TotalSeats - r.BookedSeats > GuestCount && 
+                    .Where(r => r.Flight.TotalSeats - r.BookedSeats >= GuestCount && 
                                 r.Flight.Price * GuestCount < MaxPrice &&
                                 r.Flight.Price * GuestCount > MinPrice
                     )
@@ -160,7 +160,7 @@ namespace GBC_Travel_Group23.Controllers
                     })
                     .Where(r =>
                         r.BookedRooms < r.HotelRoom.RoomCount &&
-                        r.HotelRoom.MaxOccupants <= GuestCount &&
+                        r.HotelRoom.MaxOccupants >= GuestCount &&
                         r.HotelRoom.Rate < MaxPrice &&
                         r.HotelRoom.Rate > MinPrice
                     )

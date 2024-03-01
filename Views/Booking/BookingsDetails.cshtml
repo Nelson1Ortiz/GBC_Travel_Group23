@@ -90,7 +90,7 @@
                     <dd class="col-sm-9">@booking.GuestCount<dd>
 
                     <dt class="col-sm-3">Total</dt>
-                    <dd class="col-sm-9">$@(ViewBag.Total) ($@booking.HotelRoom.Rate per night)</dd>
+                    <dd class="col-sm-9">$@(booking.HotelRoom.Rate * (booking.EndDate - booking.StartDate).Days ) ($@booking.HotelRoom.Rate per night)</dd>
                 </dl>
             </div>
         }
@@ -126,7 +126,7 @@
                     <dd class="col-sm-9">@booking.GuestCount<dd>
 
                     <dt class="col-sm-3">Total</dt>
-                    <dd class="col-sm-9">$@ViewBag.Total<dd>
+                    <dd class="col-sm-9">$@(booking.CarRental.Rate * (booking.EndDate - booking.StartDate).Days)<dd>
                 </dl>
             </div>
         }
