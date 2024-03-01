@@ -2,47 +2,63 @@
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Search Form</h2>
-
-<form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
-    <div class="form-row">
-        <div class="col-md-6 mb-3 d-flex flex-column align-items-center mx-auto">
-            <label for="searchOptions">I am looking for: (Hold ctrl/cmd to select multiple)</label>
-            <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
-                <option value="Hotels">Hotels</option>
-                <option value="CarRentals">Car Rentals</option>
-                <option value="Flights">Flights</option>
-            </select>
-        </div>
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <span><strong>Listing Search</strong></span>
     </div>
+    <div class="card-body">
+        <form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
+            <div class="form-row">
+                <div class="col-md-6 mb-2">
+                    <label for="searchOptions">I am looking for: (Hold ctrl/cmd to select multiple)</label>
+                    <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
+                        <option value="Hotels">Hotels</option>
+                        <option value="CarRentals">Car Rentals</option>
+                        <option value="Flights">Flights</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="FromLocationDropdown">Where are you coming from?:</label>
+                    <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
+                    <label for="ToLocationDropdown">Where are you going?:</label>
+                    <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
+                </div>
+            </div>
+            <hr>
+            <div class="form-row">
+                <div class="col-md-6 mb-2">
+                    <label for="StartDate">Arrival Date:</label>
+                    <input required name="StartDate" asp-for="StartDate" type="date" class="form-control" value="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" />
+                </div>
 
-    <div class="form-row">
-        <div class="col-md-6 mb-3">
-            <label for="FromLocationDropdown">Where are you coming from?:</label>
-            <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
-        </div>
+                <div class="col-md-6 mb-2">
+                    <label for="EndDate">Departure Date:</label>
+                    <input required name="EndDate" asp-for="EndDate" type="date" class="form-control" value="@DateTime.Now.AddDays(6).ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+            <hr>
+            <div class="form-row mb-2 justify-content-center">
+                <div class="col-md-2">
+                    <label for="GuestCount">Number of Guests</label>
+                    <input required name="GuestCount" asp-for="GuestCount" type="number" class="form-control" value="1" min="1" />
+                </div>
+                <div class="col-md-4">
+                    <label for="MinPrice">Minimum Price ($)</label>
+                    <input name="MinPrice" asp-for="MinPrice" type="number" class="form-control" value="0" min="0" />
+                </div>
 
-        <div class="col-md-6 mb-3">
-            <label for="ToLocationDropdown">Where are you going?:</label>
-            <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
-        </div>
+                <div class="col-md-4">
+                    <label for="MaxPrice">Maximum Price ($)</label>
+                    <input name="MaxPrice" asp-for="MaxPrice" type="number" class="form-control" value="3000" min="100" />
+                </div>
+
+            </div>
+            <div class="form-row d-flex flex-column align-items-center">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
     </div>
-
-    <div class="form-row">
-        <div class="col-md-6 mb-3">
-            <label for="StartDate">Arrival Date:</label>
-            <input required name="StartDate" asp-for="StartDate" type="date" class="form-control" value="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" />
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="EndDate">Departure Date:</label>
-            <input required name="EndDate" asp-for="EndDate" type="date" class="form-control" value="@DateTime.Now.AddDays(6).ToString("yyyy-MM-dd")" />
-        </div>
-    </div>
-    <div class="form-row d-flex flex-column align-items-center">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-</form>
+</div>
 
 @section Scripts {
     <script>
@@ -75,8 +91,11 @@
             var alertMsg = "";
             var startDate = document.getElementsByName("StartDate")[0];
             var endDate = document.getElementsByName("EndDate")[0];
-            var from = document.getElementsByName("From")[0]
-            var to = document.getElementsByName("To")[0]
+            var from = document.getElementsByName("From")[0];
+            var to = document.getElementsByName("To")[0];
+            var max = document.getElementsByName("MaxCount")[0];
+            var min = document.getElementsByName("MinCount")[0];
+
             var services = document.getElementsByName("searchOptions")[0]
             if (new Date(startDate.value) >= new Date(endDate.value)) {
                 alertMsg += "Departure date must be after the arrival date.\n";
@@ -98,6 +117,14 @@
                 to.classList.remove('is-valid');
                 from.classList.add('is-invalid');
                 to.classList.add('is-invalid');
+                isValid = false;
+            }
+            if (min.value > max.value) {
+                alertMsg += "Min Price can not be greater than the max!\n"
+                min.classList.remove('is-valid');
+                max.classList.remove('is-valid');
+                min.classList.add('is-invalid');
+                max.classList.add('is-invalid');
                 isValid = false;
             }
             if (!isValid) { alert(alertMsg); }

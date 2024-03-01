@@ -67,7 +67,7 @@ namespace GBC_Travel_Group23.Controllers
                 booking.HotelRoom = _context.HotelRooms.Find(booking.ServiceId)!;
                 booking.HotelRoom.Hotel = _context.Hotels.Find(booking.HotelRoom.HotelId)!;
                 booking.HotelRoom.Hotel.Location = _context.Locations.Find(booking.HotelRoom.Hotel.LocationId)!;
-                ViewBag.Total = (booking.EndDate - booking.StartDate).Days * booking.CarRental!.Rate;
+                ViewBag.Total = (booking.EndDate - booking.StartDate).Days * booking.HotelRoom!.Rate;
             }
             
             return View(booking);
@@ -76,23 +76,37 @@ namespace GBC_Travel_Group23.Controllers
         [HttpPost]
         public IActionResult CompleteBooking(Booking booking)
         {
-            if (ModelState.IsValid)
-            {
+            
+                var client = _context.Clients.FirstOrDefault(c => c.Email == booking.Client.Email);
+				if (client is Client)
+                {
+                    booking.ClientId = client.Id;
+                    booking.Client = client;
+                } else
+                {
+                    _context.Clients.Add(booking.Client);
+                }
+
                 _context.Add(booking);
                 _context.SaveChanges();
-            }
-            return RedirectToAction("BookingsDetails", booking);
+            return RedirectToAction("BookingsDetails", "Booking", new { clientEmail = booking.Client.Email});
         }
 
-        [HttpPost]
-        public IActionResult BookingsDetails(Booking booking)
+        [HttpGet]
+        public IActionResult BookingsDetails(string clientEmail)
         {
             List<Booking> bookings = _context.Bookings
                 .Include(b => b.Flight)
+                    .ThenInclude(f => f.ArrivalLocation)
+                .Include(b => b.Flight)
+                    .ThenInclude(f => f.DepartureLocation)
                 .Include(b => b.HotelRoom)
+                    .ThenInclude(hr => hr.Hotel)
+                        .ThenInclude(h => h.Location)
                 .Include(b => b.CarRental)
+                    .ThenInclude(cr => cr.Location)
                 .Include(b => b.Client)
-                .Where(b => b.ClientId == booking.ClientId)
+                .Where(b => b.Client.Email == clientEmail)
                 .ToList();
             return View(bookings);
         }

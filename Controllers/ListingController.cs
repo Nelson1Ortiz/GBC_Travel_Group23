@@ -19,6 +19,7 @@ namespace GBC_Travel_Group23.Controllers
             _context = context;
         }
 
+        //Add Listings Link
         public IActionResult AddListing() 
         {
             ViewBag.LocationsData = Utils.getAllLocationsString(_context)
@@ -28,6 +29,8 @@ namespace GBC_Travel_Group23.Controllers
             return View(); 
         }
 
+
+        //Add Listings Db methods
         [HttpPost]
         public IActionResult AddFlight(AddListingViewModel model)
         {
@@ -99,6 +102,7 @@ namespace GBC_Travel_Group23.Controllers
             return RedirectToAction("HotelRoomDetails", new {id = newRoom.Id});
         }
 
+        //Listing Details
         [HttpGet]
         public IActionResult FlightDetails(int id, string mode)
         {
@@ -121,6 +125,63 @@ namespace GBC_Travel_Group23.Controllers
             return View(flight);
         }
 
+        [HttpGet]
+        public IActionResult CarRentalDetails(int id, string mode)
+        {
+            CarRental? carRental = _context.CarRentals
+                .Include(c => c.Location)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.LocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(carRental.Location) });
+            ViewBag.Mode = mode;
+            return View(carRental);
+        }
+
+        [HttpGet]
+        public IActionResult HotelDetails(int id, string mode)
+        {
+            var hotel = _context.Hotels
+                .Include(h => h.Location)
+                .FirstOrDefault(h => h.Id == id);
+
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            
+            ViewBag.LocationsData = Utils.getAllLocationsString(_context)
+                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(hotel.Location) });
+            ViewBag.Mode = mode;
+            return View(hotel);
+        }
+
+        [HttpGet]
+        public IActionResult HotelRoomDetails(int id, string mode)
+        {
+            var hotelRoom = _context.HotelRooms
+                .Include(hr => hr.Hotel)
+                    .ThenInclude(h => h.Location)
+                .FirstOrDefault(hr => hr.Id == id);
+
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
+
+         
+            ViewBag.HotelLocation = Utils.GetLocationString(hotelRoom.Hotel.Location);
+            ViewBag.Mode = mode;
+            return View(hotelRoom);
+        }
+
+        //Update Methods
         [HttpPost]
         public IActionResult UpdateFlight(Flight flight)
         {
@@ -138,6 +199,7 @@ namespace GBC_Travel_Group23.Controllers
 
             return RedirectToAction("FlightDetails", new { id = existingFlight.Id, mode = "view" });
         }
+        
         [HttpPost]
         public IActionResult UpdateCarRental(CarRental carRental)
         {
@@ -155,8 +217,9 @@ namespace GBC_Travel_Group23.Controllers
 
             return RedirectToAction("CarRentalDetails", new { id = existingCarRental.Id, mode = "view" });
         }
+       
         [HttpPost]
-        public IActionResult UpdateHotels(Hotel hotel)
+        public IActionResult UpdateHotel(Hotel hotel)
         {
             var existingHotel = _context.Hotels.Find(hotel.Id);
             existingHotel!.Name = hotel.Name;
@@ -185,202 +248,87 @@ namespace GBC_Travel_Group23.Controllers
 
             return RedirectToAction("HotelDetails", new { id = existingHotelRoom.Id, mode = "view" });
         }
+        
 
+
+        //Delete methods
         [HttpGet]
-        public IActionResult CarRentalDetails(int id)
+        public IActionResult DeleteFlight(int id)
         {
-            CarRental? carRental = _context.CarRentals
-                .Include(c => c.Location)
-                .FirstOrDefault(c => c.Id == id);
-
-            if (carRental == null)
-            {
-                return NotFound();
-            }
-
-            ViewBag.LocationsData = Utils.getAllLocationsString(_context)
-                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(carRental.Location) });
-
-            return View(carRental);
-        }
-
-
-        [HttpGet]
-        public IActionResult HotelDetails(int id)
-        {
-            var hotel = _context.Hotels
-                .Include(h => h.Location)
-                .FirstOrDefault(h => h.Id == id);
-
-            if (hotel == null)
-            {
-                return NotFound();
-            }
-
-            
-            ViewBag.LocationsData = Utils.getAllLocationsString(_context)
-                .Select(location => new SelectListItem { Text = location, Value = location, Selected = location == Utils.GetLocationString(hotel.Location) });
-
-            return View(hotel);
-        }
-
-
-        [HttpGet]
-        public IActionResult HotelRoomDetails(int id)
-        {
-            var hotelRoom = _context.HotelRooms
-                .Include(hr => hr.Hotel)
-                    .ThenInclude(h => h.Location)
-                .FirstOrDefault(hr => hr.Id == id);
-
-            if (hotelRoom == null)
-            {
-                return NotFound();
-            }
-
-         
-            ViewBag.HotelLocation = Utils.GetLocationString(hotelRoom.Hotel.Location);
-
-            return View(hotelRoom);
-        }
-
-
-
-        [HttpPost, ActionName("DeleteFlight")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteFlightConfirmed(int id)
-        {
-            var flight = await _context.Flights.FindAsync(id);
+            var flight = _context.Flights.Find(id);
             if (flight != null)
             {
-                // Assuming Flight has a dependency like Bookings, you'd handle it here.
-                // Example: _context.Bookings.Where(b => b.FlightId == id).ToList().ForEach(b => _context.Bookings.Remove(b));
-
+                var assocBookings = _context.Bookings.Where(b => b.Type == "flight" && b.ServiceId == id).ToList();
+                if (assocBookings.Count > 0)
+                {
+                    _context.Bookings.RemoveRange(assocBookings);
+                }
                 _context.Flights.Remove(flight);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
 
-            return RedirectToAction(nameof(Flight)); // Redirect to the list of flights
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost, ActionName("DeleteCarRental")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCarRentalConfirmed(int id)
+        [HttpGet]
+        public IActionResult DeleteCarRental(int id)
         {
-            var carRental = await _context.CarRentals.FindAsync(id);
+            var carRental = _context.CarRentals.Find(id);
             if (carRental != null)
             {
+                var assocBookings = _context.Bookings.Where(b => b.Type == "car" && b.ServiceId == id).ToList();
+                if (assocBookings.Count > 0)
+                {
+                    _context.Bookings.RemoveRange(assocBookings);
+                }
                 _context.CarRentals.Remove(carRental);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
 
-            return RedirectToAction(nameof(CarRental)); // Redirect to the list of car rentals
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost, ActionName("DeleteHotelRoom")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteHotelRoomConfirmed(int id)
+        [HttpGet]
+        public IActionResult DeleteHotelRoom(int id)
         {
-            var hotelRoom = await _context.HotelRooms.FindAsync(id);
+            var hotelRoom = _context.HotelRooms.Find(id);
             if (hotelRoom != null)
             {
-                // Additional logic here if there are dependencies to handle
-
+                var assocBookings = _context.Bookings.Where(b => b.Type == "car" && b.ServiceId == id).ToList();
+                if (assocBookings.Count > 0)
+                {
+                    _context.Bookings.RemoveRange(assocBookings);
+                }
                 _context.HotelRooms.Remove(hotelRoom);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
 
-            return RedirectToAction(nameof(HotelRoom)); // Redirect to the list of hotel rooms
+            return RedirectToAction("Index", "Home");
         }
 
-
-
-
-        [HttpPost, ActionName("DeleteHotel")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteHotelConfirmed(int id)
+        [HttpGet]
+        public IActionResult DeleteHotel(int id)
         {
-            var hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
+            var hotel = _context.Hotels.Include(h => h.Rooms).FirstOrDefault(h => h.Id == id);
             if (hotel != null)
             {
-                // If the hotel has rooms, delete them first to avoid foreign key constraint issues
-                if (hotel.Rooms.Any())
+                var assocBookings = _context.Bookings.Where(b => b.Type == "car" && b.ServiceId == id).ToList();
+                if (assocBookings.Count > 0)
+                {
+                    _context.Bookings.RemoveRange(assocBookings);
+                }
+                if (hotel.Rooms.Count > 0)
                 {
                     _context.HotelRooms.RemoveRange(hotel.Rooms);
                 }
 
-                // Now delete the hotel
                 _context.Hotels.Remove(hotel);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
 
-            // Assuming "Index" is the action method that shows the list of hotels. 
-            // You might need to replace "Index" with the actual action method name if it's different.
-            return RedirectToAction("Index"); // Redirect to the list of hotels
+            return RedirectToAction("Index", "Home");
         }
-
-        [HttpPost, ActionName("DeleteFlight")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteFlightConfirmed(int id)
-        {
-            var flight = await _context.Flights.FirstOrDefaultAsync(f => f.Id == id);
-            if (flight != null)
-            {
-                // Check if there are any bookings associated with this flight
-                var bookings = await _context.Bookings.Where(b => b.Id == id).ToListAsync();
-
-                // If there are bookings, delete them
-                if (bookings.Any())
-                {
-                    _context.Bookings.RemoveRange(bookings);
-                }
-
-                // Now delete the flight
-                _context.Flights.Remove(flight);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index)); // Adjust as needed to redirect to the appropriate view
-        }
-
-        [HttpPost, ActionName("DeleteCarRental")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCarRentalConfirmed(int id)
-        {
-            var carRental = await _context.CarRentals.FindAsync(id);
-            if (carRental != null)
-            {
-                _context.CarRentals.Remove(carRental);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index)); // Adjust as needed
-        }
-
-        [HttpPost, ActionName("DeleteHotel")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteHotelConfirmed(int id)
-        {
-            var hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
-            if (hotel != null)
-            {
-                // If the hotel has rooms, delete them first
-                if (hotel.Rooms.Any())
-                {
-                    _context.HotelRooms.RemoveRange(hotel.Rooms);
-                }
-
-                // Now delete the hotel
-                _context.Hotels.Remove(hotel);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index)); // Adjust as needed
-        }
-
-
-
-
+       
 
     }
 }

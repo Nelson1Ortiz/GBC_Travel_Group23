@@ -26,6 +26,9 @@
                     {
                         <!-- Display Car Rental Details -->
                         <dl class="row">
+                            <dt class="col-sm-3">Location</dt>
+                            <dd class="col-sm-9">@Model.Location.City, @Model.Location.Region, @Model.Location.Country</dd>
+
                             <dt class="col-sm-3">Make</dt>
                             <dd class="col-sm-9">@Model.Make</dd>
 
@@ -45,6 +48,7 @@
                             <dd class="col-sm-9">@Model.Rate.ToString("C")</dd>
                         </dl>
                         <div class="text-center">
+                            <a href="@Url.Action("CreateBooking", "Booking", new { type = "car", Id = Model.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a>
                             <a href="@Url.Action("CarRentalDetails", "Listing", new { Id = @Model.Id, mode = "edit" })" class="btn btn-primary">Edit</a>
                             <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this car rental?');">Delete</a>
                         </div>

@@ -4,69 +4,134 @@
 
 @if (Model != null && Model.Any())
 {
-    <dl class="row">
-        <h3>Client Details</h3>
-        <dt class="col-sm-3">Name</dt>
-        <dd class="col-sm-9"></dd>
-        <dt class="col-sm-3">Email</dt>
-        <dd class="col-sm-9"></dd>
-        <dt class="col-sm-3"></dt>
-        <dd class="col-sm-9"></dd>
+    var booking1 = Model.FirstOrDefault()!;
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <span>Client Details</span>
+        </div>
+        <div class="card-body">
+            <dl>
+                <dt class="col-sm-3">Client Name</dt>
+                <dd class="col-sm-9">@booking1.Client.FullName</dd>
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@booking1.Client.Email</dd>
+                <dt class="col-sm-3">Phone</dt>
+                <dd class="col-sm-9">@booking1.Client.Phone</dd>
+            </dl>
+        </div>
+    </div>
+    int i = 0;
+    foreach (var booking in Model.Reverse())
+    {
+        i++;
+        <div class="card">
+        @if (booking.Type == "flight")
+        {
+            <div class="card-header bg-dark text-white mb-3">
+                <span>@i) Flight Booking Details</span>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt class="col-sm-3">Flight Code</dt>
+                    <dd class="col-sm-9">@booking.Flight!.FlightCode</dd>
 
+                    <dt class="col-sm-3">Airline</dt>
+                    <dd class="col-sm-9">@booking.Flight.Airline</dd>
 
-    </dl>
-    <dl class="row">
-        <dt class="col-sm-3">Booking ID</dt>
-        <dd class="col-sm-9"></dd>
-        <dt class="col-sm-3">Departure</dt>
-        <dd class="col-sm-9"></dd>
-        <dt class="col-sm-3">Departure Airport Code</dt>
-        <dd class="col-sm-9"> </dd>
-        <dt class="col-sm-3">Destination</dt>
-        <dd class="col-sm-9"> </dd>
-        <dt class="col-sm-3">Destination Airport</dt>
-        <dd class="col-sm-9"> </dd>
-        <dt class="col-sm-3"></dt>
-        <dd class="col-sm-9"> </dd>
-        <dt class="col-sm-3"></dt>
-        <dd class="col-sm-9"> </dd>
-        <dt class="col-sm-3"></dt>
-        <dd class="col-sm-9"> </dd>
-    </dl>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Booking ID</th>
-                <th>Service Type</th>
-                <th>Details</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in Model)
-            {
-                <tr>
-                    <td>@booking.Id</td>
-                    <td>@booking.Type</td>
-                    <td>
-                        @if (booking.Flight != null)
-                        {
-                            @: Flight to @booking.Flight.ArrivalLocation.City on @booking.Flight.DepartureDate.ToString("MM/dd/yyyy")
-                        }
-                        else if (booking.CarRental != null)
-                        {
-                            @: Car Rental - @booking.CarRental.Make @booking.CarRental.Model
-                        }
-                        else if (booking.HotelRoom != null)
-                        {
-                            @: Hotel Stay at @booking.HotelRoom.Hotel.Name
-                        }
-                    </td>
-                    <td>@booking.StartDate.ToString("MM/dd/yyyy")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    <dt class="col-sm-3">Departure</dt>
+                    <dd class="col-sm-9">@booking.Flight.DepartureLocation.City on @booking.Flight.DepartureDate.ToShortDateString()</dd>
+
+                    <dt class="col-sm-3">Departure Airport Code</dt>
+                    <dd class="col-sm-9">@booking.Flight.DepartureLocation.AirportCode</dd>
+
+                    <dt class="col-sm-3">Destination</dt>
+                    <dd class="col-sm-9">@booking.Flight.ArrivalLocation.City on @booking.Flight.ArrivalDate.ToShortDateString()</dd>
+
+                    <dt class="col-sm-3">Destination Airport</dt>
+                    <dd class="col-sm-9">@booking.Flight.ArrivalLocation.AirportCode</dd>
+
+                    <dt class="col-sm-3">Ticket Count</dt>
+                    <dd class="col-sm-9">@booking.GuestCount</dd>
+
+                    <dt class="col-sm-3">Total</dt>
+                    <dd class="col-sm-9">$@(booking.GuestCount * booking.Flight.Price) (Each ticket: $@booking.Flight.Price)</dd>
+                </dl>
+            </div>
+        }
+        else if (booking.Type == "hotelroom")
+        {
+            <div class="card-header bg-dark text-white">
+                <span>@i) Hotel Room Booking Details</span>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt class="col-sm-3">Hotel</dt>
+                    <dd class="col-sm-9">@booking.HotelRoom!.Hotel.Name</dd>
+
+                    <dt class="col-sm-3">Location</dt>
+                    <dd class="col-sm-9">@(booking.HotelRoom.Hotel.Location!.City), @booking.HotelRoom.Hotel.Location.Country</dd>
+
+                    <dt class="col-sm-3">Address</dt>
+                    <dd class="col-sm-9">@booking.HotelRoom.Hotel.Address</dd>
+
+                    <dt class="col-sm-3">Room Name</dt>
+                    <dd class="col-sm-9">@booking.HotelRoom.RoomName</dd>
+
+                    <dt class="col-sm-3">Amenities</dt>
+                    <dd class="col-sm-9">@booking.HotelRoom.Amenities ,@booking.HotelRoom.Hotel.Amenities<dd>
+
+                    <dt class="col-sm-3">Check-In Date</dt>
+                    <dd class="col-sm-9">@booking.StartDate<dd>
+
+                    <dt class="col-sm-3">Check-Out Date</dt>
+                    <dd class="col-sm-9">@booking.EndDate<dd>
+
+                    <dt class="col-sm-3">Guest Count</dt>
+                    <dd class="col-sm-9">@booking.GuestCount<dd>
+
+                    <dt class="col-sm-3">Total</dt>
+                    <dd class="col-sm-9">$@(ViewBag.Total) ($@booking.HotelRoom.Rate per night)</dd>
+                </dl>
+            </div>
+        }
+        else
+        {
+            <div class="card-header bg-dark text-white">
+                <span>@i) Car Rental Booking Details</span>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt class="col-sm-3">Location</dt>
+                    <dd class="col-sm-9">@(booking.CarRental!.Location!.City), @booking.CarRental.Location.Country</dd>
+
+                    <dt class="col-sm-3">Make</dt>
+                    <dd class="col-sm-9">@booking.CarRental.Make<dd>
+
+                    <dt class="col-sm-3"></dt>
+                    <dd class="col-sm-9">@booking.CarRental.Model<dd>
+
+                    <dt class="col-sm-3">Year</dt>
+                    <dd class="col-sm-9">@booking.CarRental.CarYear<dd>
+
+                    <dt class="col-sm-3">Capacity</dt>
+                    <dd class="col-sm-9">@booking.CarRental.Capacity<dd>
+
+                    <dt class="col-sm-3">Pickup Date</dt>
+                    <dd class="col-sm-9">@booking.StartDate<dd>
+
+                    <dt class="col-sm-3">Drop Off Date</dt>
+                    <dd class="col-sm-9">@booking.EndDate<dd>
+                    
+                    <dt class="col-sm-3">Guest Count</dt>
+                    <dd class="col-sm-9">@booking.GuestCount<dd>
+
+                    <dt class="col-sm-3">Total</dt>
+                    <dd class="col-sm-9">$@ViewBag.Total<dd>
+                </dl>
+            </div>
+        }
+    </div>
+    }
 }
 else
 {

@@ -3,235 +3,288 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Listings</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
-        <div class="form-row">
-            <div class="col-md-6 mb-3 d-flex flex-column align-items-center mx-auto">
-                <label for="searchOptions">I am looking for: (Hold ctrl/cmd to select multiple)</label>
-                <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
-                    <option value="Hotels">Hotels</option>
-                    <option value="CarRentals">Car Rentals</option>
-                    <option value="Flights">Flights</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col-md-6 mb-3">
-                <label for="FromLocationDropdown">Where are you coming from?:</label>
-                <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="ToLocationDropdown">Where are you going?:</label>
-                <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col-md-6 mb-3">
-                <label for="StartDate">Arrival Date:</label>
-                <input required name="StartDate" asp-for="StartDate" type="date" class="form-control" value="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" />
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="EndDate">Departure Date:</label>
-                <input required name="EndDate" asp-for="EndDate" type="date" class="form-control" value="@DateTime.Now.AddDays(6).ToString("yyyy-MM-dd")" />
-            </div>
-        </div>
-        <div class="form-row d-flex flex-column align-items-center">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </form>
-    <ul class="nav nav-tabs" role="tablist">
-        @if (ViewBag.SearchFlights)
-        {
-            <li class="nav-item">
-                <a class="nav-link active" id="Flights-tab" data-toggle="tab" href="#Flights" role="tab">Flights</a>
-            </li>
-        }
-
-        @if (ViewBag.SearchCars)
-        {
-            <li class="nav-item">
-                <a class="nav-link" id="carRentals-tab" data-toggle="tab" href="#carRentals" role="tab">Car Rentals</a>
-            </li>
-        }
-
-        @if (ViewBag.SearchHotels)
-        {
-            <li class="nav-item">
-                <a class="nav-link" id="hotelRooms-tab" data-toggle="tab" href="#hotelRooms" role="tab">Hotel Rooms</a>
-            </li>
-        }
-    </ul>
-
-    <div class="tab-content">
-        @if (ViewBag.SearchFlights)
-        {
-            <div class="tab-pane fade show active" id="Flights" role="tabpanel">
-                <h3>Departing Flights</h3>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Flight Code</th>
-                            <th>Airline</th>
-                            <th>Departure Location</th>
-                            <th>Arrival Location</th>
-                            <th>Departure Date</th>
-                            <th>Total Seats</th>
-                            <th>Available Seats</th>
-                            <th>Book Now</th>
-                            <th>Edit Listing</th>
-                            <th>Delete Listing</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var flight in ViewBag.AvailableDepartureFlights)
-                        {
-                            <tr>
-                                <td>@flight.FlightCode</td>
-                                <td>@flight.Airline</td>
-                                <td>@flight.DepartureLocation</td>
-                                <td>@flight.ArrivalLocation</td>
-                                <td>@flight.DepartureDate</td>
-                                <td>@flight.TotalSeats</td>
-                                <td>@flight.AvailableSeats</td>
-                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "flight", Id = flight.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
-                                <td><a target="_blank" href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <h3>Returning Flights</h3>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Flight Code</th>
-                            <th>Airline</th>
-                            <th>Departure Location</th>
-                            <th>Arrival Location</th>
-                            <th>Departure Date</th>
-                            <th>Total Seats</th>
-                            <th>Available Seats</th>
-                            <th>Book Now</th>
-                            <th>Edit Listing</th>
-                            <th>Delete Listing</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var flight in ViewBag.AvailableReturnFlights)
-                        {
-                            <tr>
-                                <td>@flight.FlightCode</td>
-                                <td>@flight.Airline</td>
-                                <td>@flight.DepartureLocation</td>
-                                <td>@flight.ArrivalLocation</td>
-                                <td>@flight.DepartureDate</td>
-                                <td>@flight.TotalSeats</td>
-                                <td>@flight.AvailableSeats</td>
-                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "flight", Id = flight.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
-                                <td><a target="_blank" href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-
-        @if (ViewBag.SearchCars)
-        {   
-            <div class="tab-pane fade @(!ViewBag.SearchFlights ? "show active" : "")" id="carRentals" role="tabpanel">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Make</th>
-                            <th>Model</th>
-                            <th>Year</th>
-                            <th>Capacity</th>
-                            <th>Cars Available</th>
-                            <th>Rate</th>
-                            <th>Book Now</th>
-                            <th>Edit Listing</th>
-                            <th>Delete Listing</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var carRental in ViewBag.AvailableCarRentals)
-                        {
-                            <tr>
-                                <td>@carRental.Make</td>
-                                <td>@carRental.Model</td>
-                                <td>@carRental.CarYear</td>
-                                <td>@carRental.Capacity</td>
-                                <td>@carRental.AvailableCars</td>
-                                <td>$@carRental.Rate</td>
-                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "car", Id = carRental.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
-                                <td><a target="_blank" href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteCarRental", "Listing", new { Id = carRental.Id })" class="btn btn-danger">Delete</a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-
-        @if (ViewBag.SearchHotels)
-            {
-            <div class="tab-pane fade @(!ViewBag.SearchFlights && !ViewBag.SearchCars ? "show active" : "")" id="hotelRooms" role="tabpanel">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Hotel Name</th>
-                            <th>Room Name</th>
-                            <th>Amenities</th>
-                            <th>Max Occupants</th>
-                            <th>Available Rooms</th>
-                            <th>Rate</th>
-                            <th>Book Now</th>
-                            <th>Edit Listing</th>
-                            <th>Delete Listing</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var hotelRoom in ViewBag.AvailableHotelRooms)
-                        {
-                            <tr>
-                                <td>@hotelRoom.HotelName</td>
-                                <td>@hotelRoom.RoomName</td>
-                                <td>@hotelRoom.Amenities</td>
-                                <td>@hotelRoom.MaxOccupants</td>
-                                <td>@hotelRoom.AvailableRooms / @hotelRoom.RoomCount</td>
-                                <td>@hotelRoom.Rate</td>
-                                <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "hotelroom", Id = hotelRoom.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
-                                <td><a target="_blank" href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
-                                <td><a href="@Url.Action("DeleteHotelRoom", "Listing", new { Id = hotelRoom.Id })" class="btn btn-danger">Delete</a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
+<div class="card">
+    <div class="card-header bg-dark text-white" data-toggle="collapse" data-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+        <span><strong>Listing Search</strong> (click to expand)</span>
+        <button class="btn btn-link" type="button">
+            <i class="fas fa-chevron-down"></i>
+        </button>
     </div>
+    <div class="collapse" id="searchForm">
+        <div class="card-body">
+            <form method="post" asp-controller="Search" asp-action="SearchListings" onsubmit="return validateSearch()">
+                <div class="form-row">
+                    <div class="col-md-6 mb-2">
+                        <label for="searchOptions">I am looking for: (Hold ctrl/cmd to select multiple)</label>
+                        <select name="searchOptions" asp-for="SearchOptions" class="form-control custom-select" multiple required>
+                            <option value="Hotels">Hotels</option>
+                            <option value="CarRentals">Car Rentals</option>
+                            <option value="Flights">Flights</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="FromLocationDropdown">Where are you coming from?:</label>
+                        <select required name="From" asp-for="From" class="form-control" id="FromLocationDropdown"></select>
+                        <label for="ToLocationDropdown">Where are you going?:</label>
+                        <select required name="To" asp-for="To" class="form-control" id="ToLocationDropdown"></select>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div class="col-md-6 mb-2">
+                        <label for="StartDate">Arrival Date:</label>
+                        <input required name="StartDate" asp-for="StartDate" type="date" class="form-control" value="@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" />
+                    </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/%4popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
-</html>
+                    <div class="col-md-6 mb-2">
+                        <label for="EndDate">Departure Date:</label>
+                        <input required name="EndDate" asp-for="EndDate" type="date" class="form-control" value="@DateTime.Now.AddDays(6).ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row mb-2 justify-content-center">
+                    <div class="col-md-2">
+                        <label for="GuestCount">Number of Guests</label>
+                        <input required name="GuestCount" asp-for="GuestCount" type="number" class="form-control" value="1" min="1" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="MinPrice">Minimum Price ($)</label>
+                        <input name="MinPrice" asp-for="MinPrice" type="number" class="form-control" value="0" min="0" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="MaxPrice">Maximum Price ($)</label>
+                        <input name="MaxPrice" asp-for="MaxPrice" type="number" class="form-control" value="3000" min="100" />
+                    </div>
+
+                </div>
+                <div class="form-row d-flex flex-column align-items-center">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<hr>
+<div class="card">
+    <div class="card-header mb-0 pb-0 bg-dark text-white" style="padding-bottom: 0;">
+        <ul class="nav nav-tabs" role="tablist">
+            @if (ViewBag.SearchFlights)
+            {
+                <li class="nav-item">
+                    <a class="nav-link active" id="Flights-tab" data-toggle="tab" href="#Flights" role="tab">Flights</a>
+                </li>
+            }
+
+            @if (ViewBag.SearchCars)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="carRentals-tab" data-toggle="tab" href="#carRentals" role="tab">Car Rentals</a>
+                </li>
+            }
+
+            @if (ViewBag.SearchHotels)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="hotelRooms-tab" data-toggle="tab" href="#hotelRooms" role="tab">Hotel Rooms</a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            @if (ViewBag.SearchFlights)
+            {
+                <div class="tab-pane fade show active" id="Flights" role="tabpanel">
+                    <h3>Departing Flights</h3>
+                    @if (ViewBag.AvailableDepartureFlights != null && ViewBag.AvailableDepartureFlights.Count > 0)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Flight Code</th>
+                                    <th>Airline</th>
+                                    <th>Departure Location</th>
+                                    <th>Arrival Location</th>
+                                    <th>Departure Date</th>
+                                    <th>Total Seats</th>
+                                    <th>Available Seats</th>
+                                    <th>Ticket Price</th>
+                                    <th>Total Price</th>
+                                    <th>Book Now</th>
+                                    <th>Edit Listing</th>
+                                    <th>Delete Listing</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var flight in ViewBag.AvailableDepartureFlights)
+                                {
+                                    <tr>
+                                        <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "view" })">@flight.FlightCode</a></td>
+                                        <td>@flight.Airline</td>
+                                        <td>@flight.DepartureLocation</td>
+                                        <td>@flight.ArrivalLocation</td>
+                                        <td>@flight.DepartureDate</td>
+                                        <td>@flight.TotalSeats</td>
+                                        <td>@flight.AvailableSeats</td>
+                                        <td>@flight.Price</td>
+                                        <td>@flight.TotalPrice</td>
+                                        <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "flight", Id = flight.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                        <td><a target="_blank" href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                        <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    <hr>
+                    <h3>Returning Flights</h3>
+                    @if (ViewBag.AvailableReturnFlights != null && ViewBag.AvailableReturnFlights.Count > 0)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Flight Code</th>
+                                    <th>Airline</th>
+                                    <th>Departure Location</th>
+                                    <th>Arrival Location</th>
+                                    <th>Departure Date</th>
+                                    <th>Total Seats</th>
+                                    <th>Available Seats</th>
+                                    <th>Ticket Price</th>
+                                    <th>Total Price</th>
+                                    <th>Book Now</th>
+                                    <th>Edit Listing</th>
+                                    <th>Delete Listing</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var flight in ViewBag.AvailableReturnFlights)
+                                {
+                                    <tr>
+                                        <td><a href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "view" })">@flight.FlightCode</a></td>
+                                        <td>@flight.Airline</td>
+                                        <td>@flight.DepartureLocation</td>
+                                        <td>@flight.ArrivalLocation</td>
+                                        <td>@flight.DepartureDate</td>
+                                        <td>@flight.TotalSeats</td>
+                                        <td>@flight.AvailableSeats</td>
+                                        <td>@flight.Price</td>
+                                        <td>@flight.TotalPrice</td>
+                                        <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "flight", Id = flight.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                        <td><a target="_blank" href="@Url.Action("FlightDetails", "Listing", new { Id = flight.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                        <td><a href="@Url.Action("DeleteFlight", "Listing", new { Id = flight.Id })" class="btn btn-danger">Delete</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <h2>No Return Flights Found</h2>
+                        <p>Try Different search parameters</p>
+                    }
+                </div>
+            }
+
+            @if (ViewBag.SearchCars)
+            {   
+                <div class="tab-pane fade @(!ViewBag.SearchFlights ? "show active" : "")" id="carRentals" role="tabpanel">
+                    @if (ViewBag.AvailableCarRentals != null && ViewBag.AvailableCarRentals.Count > 0)
+                    {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Make</th>
+                                <th>Model</th>
+                                <th>Year</th>
+                                <th>Capacity</th>
+                                <th>Cars Available</th>
+                                <th>Rate</th>
+                                <th>Book Now</th>
+                                <th>Edit Listing</th>
+                                <th>Delete Listing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var carRental in ViewBag.AvailableCarRentals)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "view" })">@carRental.Make</a></td>
+                                    <td>@carRental.Model</td>
+                                    <td>@carRental.CarYear</td>
+                                    <td>@carRental.Capacity</td>
+                                    <td>@carRental.AvailableCars</td>
+                                    <td>$@carRental.Rate</td>
+                                    <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "car", Id = carRental.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                    <td><a target="_blank" href="@Url.Action("CarRentalDetails", "Listing", new { Id = carRental.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                    <td><a href="@Url.Action("DeleteCarRental", "Listing", new { Id = carRental.Id })" class="btn btn-danger">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <h2>No Car Rentals Found</h2>
+                        <p>Try Different search parameters</p>
+                    }
+                </div>
+                
+            }
+
+            @if (ViewBag.SearchHotels)
+            {
+                <div class="tab-pane fade @(!ViewBag.SearchFlights && !ViewBag.SearchCars ? "show active" : "")" id="hotelRooms" role="tabpanel">
+                    @if (ViewBag.AvailableHotelRooms != null && ViewBag.AvailableHotelRooms.Count > 0)
+                    {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Hotel Name</th>
+                                <th>Room Name</th>
+                                <th>Amenities</th>
+                                <th>Max Occupants</th>
+                                <th>Available Rooms</th>
+                                <th>Rate</th>
+                                <th>Book Now</th>
+                                <th>Edit Listing</th>
+                                <th>Delete Listing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var hotelRoom in ViewBag.AvailableHotelRooms)
+                            {
+                                <tr>
+                                    <td><a href="@Url.Action("HotelDetails", "Listing", new { Id = hotelRoom.HotelId, mode = "view" })">@hotelRoom.HotelName</a></td>
+                                    <td><a href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "view" })">@hotelRoom.RoomName</a></td>
+                                    <td>@hotelRoom.Amenities</td>
+                                    <td>@hotelRoom.MaxOccupants</td>
+                                    <td>@hotelRoom.AvailableRooms / @hotelRoom.RoomCount</td>
+                                    <td>@hotelRoom.Rate</td>
+                                    <td><a target="_blank" href="@Url.Action("CreateBooking", "Booking", new { type = "hotelroom", Id = hotelRoom.Id, StartDate = ViewBag.startDate, EndDate = ViewBag.endDate })" class="btn btn-success">Book</a></td>
+                                    <td><a target="_blank" href="@Url.Action("HotelRoomDetails", "Listing", new { Id = hotelRoom.Id, mode = "edit" })" class="btn btn-primary">Edit</a></td>
+                                    <td><a href="@Url.Action("DeleteHotelRoom", "Listing", new { Id = hotelRoom.Id })" class="btn btn-danger">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <h2>No Hotel Rooms Found</h2>
+                        <p>Try Different search parameters</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Assuming locationsData is a JavaScript array containing data in the format "City, Country"
             var locationsData = @Html.Raw(Json.Serialize(ViewBag.LocationsData));
             var FromLocationDropdown = $("#FromLocationDropdown");
             $.each(locationsData, function (index, location) {
@@ -259,8 +312,10 @@
             var alertMsg = "";
             var startDate = document.getElementsByName("StartDate")[0];
             var endDate = document.getElementsByName("EndDate")[0];
-            var from = document.getElementsByName("From")[0]
-            var to = document.getElementsByName("To")[0]
+            var from = document.getElementsByName("From")[0];
+            var to = document.getElementsByName("To")[0];
+            var max = document.getElementsByName("MaxCount")[0];
+            var min = document.getElementsByName("MinCount")[0];
             var services = document.getElementsByName("searchOptions")[0]
             if (new Date(startDate.value) >= new Date(endDate.value)) {
                 alertMsg += "Departure date must be after the arrival date.\n";
@@ -282,6 +337,14 @@
                 to.classList.remove('is-valid');
                 from.classList.add('is-invalid');
                 to.classList.add('is-invalid');
+                isValid = false;
+            }
+            if (min.value > max.value) {
+                alertMsg += "Min Price can not be greater than the max!\n"
+                min.classList.remove('is-valid');
+                max.classList.remove('is-valid');
+                min.classList.add('is-invalid');
+                max.classList.add('is-invalid');
                 isValid = false;
             }
             if (!isValid) { alert(alertMsg); }

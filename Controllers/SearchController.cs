@@ -28,6 +28,9 @@ namespace GBC_Travel_Group23.Controllers
             string to = model.To;
             DateTime startDate = model.StartDate;
             DateTime endDate = model.EndDate;
+            int GuestCount = model.GuestCount;
+            int MaxPrice = model.MaxPrice;
+            int MinPrice = model.MinPrice;
             Location departureLocation = Utils.getLocationFromString(from, _context);
             Location arrivalLocation = Utils.getLocationFromString(to, _context);
             ViewBag.StartDate = startDate;
@@ -35,7 +38,6 @@ namespace GBC_Travel_Group23.Controllers
             ViewBag.SearchFlights = searchFlights;
             ViewBag.SearchCars = searchCars;
             ViewBag.SearchHotels = searchHotels;
-
 
             if (searchFlights)
             {
@@ -54,7 +56,10 @@ namespace GBC_Travel_Group23.Controllers
                                         b.StartDate == startDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(r => r.BookedSeats < r.Flight.TotalSeats)
+                    .Where(r => r.Flight.TotalSeats - r.BookedSeats > GuestCount && 
+                                r.Flight.Price * GuestCount < MaxPrice &&
+                                r.Flight.Price * GuestCount > MinPrice
+                    )
                     .Select(r => new
                     {
                         r.Flight.Id,
@@ -64,7 +69,9 @@ namespace GBC_Travel_Group23.Controllers
                         ArrivalLocation = $"{r.Flight.ArrivalLocation.City}, {r.Flight.ArrivalLocation.Country}",
                         DepartureDate = r.Flight.DepartureDate.Date,
                         r.Flight.TotalSeats,
-                        AvailableSeats = r.Flight.TotalSeats - r.BookedSeats
+                        TotalPrice = r.Flight.Price * GuestCount,
+                        AvailableSeats = r.Flight.TotalSeats - r.BookedSeats,
+                        r.Flight.Price
                     })
                     .ToList();
 
@@ -83,7 +90,10 @@ namespace GBC_Travel_Group23.Controllers
                                         b.StartDate == endDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(r => r.BookedSeats < r.Flight.TotalSeats)
+                    .Where(r => r.Flight.TotalSeats - r.BookedSeats >= GuestCount &&
+                                r.Flight.Price * GuestCount < MaxPrice &&
+                                r.Flight.Price * GuestCount > MinPrice
+                    )
                     .Select(r => new
                     {
                         r.Flight.Id,
@@ -93,10 +103,11 @@ namespace GBC_Travel_Group23.Controllers
                         ArrivalLocation = $"{r.Flight.ArrivalLocation.City}, {r.Flight.ArrivalLocation.Country}",
                         DepartureDate = r.Flight.DepartureDate.Date,
                         r.Flight.TotalSeats,
-                        AvailableSeats = r.Flight.TotalSeats - r.BookedSeats
+                        TotalPrice = r.Flight.Price * GuestCount,
+                        AvailableSeats = r.Flight.TotalSeats - r.BookedSeats,
+                        r.Flight.Price
                     })
                     .ToList();
-
                 ViewBag.AvailableDepartureFlights = availableDepartureFlights;
                 ViewBag.AvailableReturnFlights = availableReturnFlights;
             }
@@ -115,7 +126,10 @@ namespace GBC_Travel_Group23.Controllers
                                             b.EndDate > endDate)
                                 .Sum(b => b.GuestCount)
                         })
-                    .Where(r => r.BookedCars < r.CarRental.Count)
+                    .Where(r => r.BookedCars < r.CarRental.Count &&
+                                r.CarRental.Rate < MaxPrice &&
+                                r.CarRental.Rate > MinPrice
+                    )
                     .Select(r => new
                     {
                         r.CarRental.Id,
@@ -124,7 +138,7 @@ namespace GBC_Travel_Group23.Controllers
                         r.CarRental.CarYear,
                         r.CarRental.Capacity,
                         AvailableCars = r.CarRental.Count - r.BookedCars,
-                        r.CarRental.Rate
+                        r.CarRental.Rate,
                     })
                     .ToList();
                 ViewBag.AvailableCarRentals = availableCarRentals;
@@ -144,10 +158,16 @@ namespace GBC_Travel_Group23.Controllers
                                         b.EndDate > endDate)
                             .Sum(b => b.GuestCount)
                     })
-                    .Where(r => r.BookedRooms < r.HotelRoom.RoomCount)
+                    .Where(r =>
+                        r.BookedRooms < r.HotelRoom.RoomCount &&
+                        r.HotelRoom.MaxOccupants <= GuestCount &&
+                        r.HotelRoom.Rate < MaxPrice &&
+                        r.HotelRoom.Rate > MinPrice
+                    )
                     .Select(r => new
                     {
                         r.HotelRoom.Id,
+                        HotelId = r.HotelRoom.Hotel.Id,
                         HotelName = r.HotelRoom.Hotel!.Name,
                         r.HotelRoom.RoomName,
                         r.HotelRoom.Amenities,
@@ -160,7 +180,6 @@ namespace GBC_Travel_Group23.Controllers
                 ViewBag.AvailableHotelRooms = availableHotelRooms;
             }
             return View(viewModel);
-
         }       
     }
 }

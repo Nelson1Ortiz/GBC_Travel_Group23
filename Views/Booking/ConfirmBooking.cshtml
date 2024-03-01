@@ -6,15 +6,24 @@
 }
 
 <div class="container mt-4">
-    <h2>Booking Complete</h2>
     <hr />
     <div class="row">
         <div class="col-md-8">
-            <div class="alert alert-info">
-                <p>Client: <strong>@Model.Client.FullName</strong></p>
-                <p>Email: <strong>@Model.Client.Email</strong></p>
-                <p>Phone: <strong>@Model.Client.Phone</strong></p>
-                <p>Booking Type: <strong>@Model.Type</strong></p>
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <span>Confirm Booking Details</span>
+                </div>
+                <div class="card-body">
+                    <dl>
+                        <dt class="col-sm-3">Client Name</dt>
+						<dd class="col-sm-9">@Model.Client.FullName</dd>
+						<dt class="col-sm-3">Email</dt>
+						<dd class="col-sm-9">@Model.Client.Email</dd>
+						<dt class="col-sm-3">Phone</dt>
+						<dd class="col-sm-9">@Model.Client.Phone</dd>
+						<dt class="col-sm-3">Booking Type</dt>
+						<dd class="col-sm-9">@Model.Type</dd>
+                    </dl>
                 @if (Model.Type == "flight")
                 {
                     <dl>
@@ -107,10 +116,12 @@
                     </dl>
 
                 }
+                </div>
             </div>
 
             <form asp-action="CompleteBooking" method="post">
                 @Html.HiddenFor(model => model.ClientId)
+                @Html.HiddenFor(model => model.Client.Email)
                 @Html.HiddenFor(model => model.Type)
                 @Html.HiddenFor(model => model.ServiceId)
                 @Html.HiddenFor(model => model.GuestCount)
@@ -123,7 +134,7 @@
         </div>
     </div>
 </div>
-
+@section Scripts {
 <script>
     function confirmCancel() {
         if (confirm("Are you sure you'd like to cancel? Progress will be lost!")) {
@@ -131,3 +142,4 @@
         }
     }
 </script>
+}
